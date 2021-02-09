@@ -37,7 +37,7 @@ export class DynamicFormComponent implements OnInit {
         inputType: 'text',
         hasAutocomplete: true,
         autocompleteConfig: {
-          url: '',
+          url: 'https://onboarding-api-local-dev.blinking.services/getStreets/?key=',
           returnType: ''
         }
       },
@@ -143,7 +143,7 @@ export class DynamicFormComponent implements OnInit {
   getAutoCompleteOptions(newValue: string, control: FormControlModel) {
 
     this.autoCompleteSubscription = this.serv.getAutocompleteSource(control.autocompleteConfig!.url,newValue).subscribe((response: any) => {
-      control.autoCompleteOptions = response;
+      control.autoCompleteOptions = response.payload;
     });
     
   }
