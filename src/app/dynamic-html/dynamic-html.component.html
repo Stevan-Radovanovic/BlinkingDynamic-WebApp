@@ -1,0 +1,12 @@
+
+<div class="wrap">
+    <p class="title">{{pageData.title}}</p>
+    <div #contentDiv></div>
+    <div class="buttons-wrap">
+        <div *ngFor="let button of pageData.actions">
+            <button [ngClass]="{'download-button': button.type==='download', 
+            'cancel-button': button.type==='cancel', 'confirm-button': button.type==='confirm'}"
+            mat-raised-button (click)="onButtonClick(button.type)">{{button.label}}</button>
+        </div>
+    </div>
+</div>

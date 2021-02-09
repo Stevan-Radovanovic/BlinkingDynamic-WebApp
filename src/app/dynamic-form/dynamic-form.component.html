@@ -1,0 +1,75 @@
+
+    <form [formGroup]="dynamicForm">
+        <div *ngFor="let control of formControlArray">
+
+          <!--Everything except Checkboxes-->
+          <mat-form-field *ngIf="control.type!=='checkbox'">
+    
+            <mat-label>{{control.label}}</mat-label>
+    
+            <!--Regular Input-->
+            <input matInput type="{{control.inputType}}" *ngIf="control.type==='input' && !control.hasAutocomplete" 
+            formControlName="{{control.name}}" value="{{control.value}}"/>
+            
+            <!--AutoComplete Input-->
+            <div *ngIf="control.hasAutocomplete">
+              <input matInput type="{{control.inputType}}" *ngIf="control.type==='input'" 
+              (ngModelChange)="getAutoCompleteOptions($event,control)"
+              formControlName="{{control.name}}" value="{{control.value}}" [matAutocomplete]="auto"/>
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of control.autoCompleteOptions">
+                    {{option}}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+
+    
+            <!--Select-->
+            <mat-select *ngIf="control.type.indexOf('select')!==-1" formControlName="{{control.name}}" 
+             multiple="{{control.type==='multiple-select' ? true : false}}">
+              <mat-option *ngFor="let option of control.selectOptions" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-select>
+    
+            <!--Text Area-->
+            <textarea matInput *ngIf="control.type==='textarea'" [rows]="control.rows"  
+             formControlName="{{control.name}}" value="{{control.value}}">
+            </textarea>
+    
+          </mat-form-field>
+
+          <!--Checkboxes-->
+          <div class="checkbox-group" *ngIf="control.type==='checkbox'">
+
+            <mat-form-field *ngIf="false">
+              <mat-select formControlName="{{control.name}}" 
+              multiple="{{control.multipleChoiceCheckbox ? true : false}}">
+               <mat-option *ngFor="let option of control.checkboxOptions" [value]="option">
+                 {{option}}
+               </mat-option>
+             </mat-select>
+            </mat-form-field>
+
+            <p>{{control.label}}</p>
+
+            <div *ngFor="let option of control.checkboxOptions; let i = index;">
+              <mat-checkbox (change)="setCheckboxValue(control,i)" [checked]="control.checkboxCheckedValues![i]">{{option}}</mat-checkbox>
+            </div>
+
+            <mat-checkbox *ngIf="control.hasOtherField" (change)="setCheckboxValue(control,control.checkboxCheckedValues!.length-1)"
+             [checked]="control.checkboxCheckedValues![control.checkboxCheckedValues!.length-1]">
+              Other: <input (change)="updateOtherValue($event,control)" 
+              [disabled]="!control.checkboxCheckedValues![control.checkboxCheckedValues!.length-1]" type="text"/>
+            </mat-checkbox>
+        
+          </div>
+
+        </div>
+      </form>
+      <div class="button-wrap">
+        <button mat-raised-button color="primary" (click)="submit()" 
+        class="margin-top" [disabled]="!dynamicForm.valid">Submit</button>
+      </div>
+      <p class="margin-top">{{submittedForm}}</p>
+

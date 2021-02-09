@@ -1,0 +1,25 @@
+form {
+
+    mat-form-field {
+        width: 100%;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}
+
+.margin-top {
+    margin-top: 15px;
+}
+
+.button-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.checkbox-group {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+

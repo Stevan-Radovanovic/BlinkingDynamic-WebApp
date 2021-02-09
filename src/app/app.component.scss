@@ -5,17 +5,14 @@
     height: 100vh;
     flex-direction: column;
 
-    form {
-        width: 50%;
-
-        mat-form-field {
-            width: 100%;
-            margin-left: 0px;
-            margin-right: 0px;
-        }
+    .switch-button {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        background-color: #ff3f60
     }
 
-    .margin-top {
-        margin-top: 15px;
+    .router {
+        width: 75%;
     }
 }

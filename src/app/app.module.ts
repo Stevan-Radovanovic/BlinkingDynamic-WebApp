@@ -10,12 +10,18 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
+import { DynamicHtmlComponent } from './dynamic-html/dynamic-html.component';
+import {HttpClientModule} from '@angular/common/http'
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DynamicFormComponent,
+    DynamicHtmlComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +32,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatButtonModule
+    MatButtonModule,
+    HttpClientModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

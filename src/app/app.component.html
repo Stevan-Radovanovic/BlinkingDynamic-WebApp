@@ -1,33 +1,9 @@
 <div class="wrap">
+  <button mat-fab class="switch-button" (click)="switchPage()">Switch</button>
   <div class="image-wrap">
     <img src="../assets/logo.png">
   </div>
-  <form [formGroup]="dynamicForm">
-    <div *ngFor="let control of formControlArray">
-      <mat-form-field>
-
-        <mat-label>{{control.label}}</mat-label>
-
-        <!--Regular Input-->
-        <input matInput *ngIf="control.type==='input'" formControlName="{{control.name}}" value="{{control.value}}"/>
-
-        <!--Select-->
-        <mat-select *ngIf="control.type.indexOf('select')!==-1" formControlName="{{control.name}}" 
-         multiple="{{control.type==='multiple-select' ? true : false}}">
-          <mat-option *ngFor="let option of control.options" [value]="option">
-            {{option}}
-          </mat-option>
-        </mat-select>
-
-        <!--Text Area-->
-        <textarea matInput *ngIf="control.type==='textarea'"  [rows]="control.rows"  
-         formControlName="{{control.name}}" value="{{control.value}}">
-        </textarea>
-
-      </mat-form-field>
-    </div>
-  </form>
-  <button mat-raised-button color="primary" (click)="submit()" 
-  class="margin-top" [disabled]="!dynamicForm.valid">Submit</button>
-  <p class="margin-top">{{submittedForm}}</p>
+  <div class="router">
+    <router-outlet></router-outlet>
+  </div>
 </div>
