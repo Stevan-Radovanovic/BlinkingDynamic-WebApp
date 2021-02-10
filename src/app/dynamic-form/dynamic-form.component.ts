@@ -81,7 +81,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         type: 'checkbox',
         required: true,
         checkboxOptions: ['Option1','Option2','Option3','Option4','Option5'],
-        multipleChoiceCheckbox: true,
+        multipleChoiceCheckbox: false,
         hasOtherField: true,
       }
     ];
@@ -119,14 +119,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       if(!control.checkboxCheckedValues![index]) {
         control.checkboxCheckedValues![index] = true;
  
-        if(index===checkboxLength-1) {
+        if(control.hasOtherField && index===checkboxLength-1) {
          this.dynamicForm.get(control.name + '-internal-other')?.enable();
        }
  
       } else {
        control.checkboxCheckedValues![index] = false;
  
-       if(index===checkboxLength-1) {
+       if(index===checkboxLength-1 && control.hasOtherField) {
          this.dynamicForm.get(control.name + '-internal-other')?.disable();
          this.dynamicForm.get(control.name + '-internal-other')?.reset('');
        }
@@ -138,7 +138,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
          for(let i=0;i<checkboxLength;i++) {
            if(i!==index) control.checkboxCheckedValues![i] = false;
          }
- 
+
+         if(index!==checkboxLength-1 && control.hasOtherField) {
+          this.dynamicForm.get(control.name + '-internal-other')?.disable();
+          this.dynamicForm.get(control.name + '-internal-other')?.reset('');
+         }
        }
 
       } 
