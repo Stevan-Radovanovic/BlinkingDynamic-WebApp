@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AppService } from '../app.service';
@@ -9,7 +9,7 @@ import { FormControlModel } from './form-control.model';
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss']
 })
-export class DynamicFormComponent implements OnInit {
+export class DynamicFormComponent implements OnInit, OnDestroy {
 
   dynamicForm!: FormGroup;
   formControlArray: FormControlModel[] = [];
@@ -26,19 +26,19 @@ export class DynamicFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getForm() {
+  getForm(): void {
      this.formControlArray = [
       {
-        name: 'name',
-        label:'Name',
-        value:'Stevan',
+        name: 'street',
+        label:'Street',
+        value:'',
         type:'input',
         required: true,
         inputType: 'text',
         hasAutocomplete: true,
         autocompleteConfig: {
           url: 'https://onboarding-api-local-dev.blinking.services/getStreets/?key=',
-          returnType: ''
+          returnType: ['name','cityName','regionName','placeName']
         }
       },
       {
@@ -86,7 +86,8 @@ export class DynamicFormComponent implements OnInit {
     ];
   }
 
-  transformToControls() {
+  //Transform each object form initial JSON objects array into a form control
+  transformToControls(): void {
     this.formControlArray.forEach((control) => {
 
       if(control.type==='checkbox') {
@@ -102,13 +103,12 @@ export class DynamicFormComponent implements OnInit {
     });
   }
 
-  initializeForm() {
+  initializeForm(): void {
     this.dynamicForm = new FormGroup(this.transformedControlArray);
   }
 
-  setCheckboxValue(control: FormControlModel, index: number) {
-
-    //TO DO - Fix Other Field Unchecking
+  //Called with each checbox (un)checking, changes the overall value of the checkboxes form control
+  setCheckboxValue(control: FormControlModel, index: number): void {
 
      const currentValue: string[] =[];
 
@@ -139,20 +139,43 @@ export class DynamicFormComponent implements OnInit {
 
   }
 
+  //Called with ech value change for auto complete inputs
+  getAutoCompleteOptions(newValue: string, control: FormControlModel): void {
 
-  getAutoCompleteOptions(newValue: string, control: FormControlModel) {
+    if(newValue.length<3) {
+      control.autoCompleteOptions = [];
+      return;
+    } 
 
     this.autoCompleteSubscription = this.serv.getAutocompleteSource(control.autocompleteConfig!.url,newValue).subscribe((response: any) => {
-      control.autoCompleteOptions = response.payload;
+
+      if(control.autocompleteConfig?.returnType==='string') {
+        control.autoCompleteOptions = response.payload;
+        return;
+      }
+
+      control.autoCompleteOptions = [];
+
+      response.payload.forEach((value: any) => {
+        console.log('here');
+        let option = '';
+        (control.autocompleteConfig?.returnType as any[]).forEach((param) => {
+          console.log(param,value[param])
+          option = option.concat(value[param]+', ');
+        })
+        control.autoCompleteOptions!.push(option.slice(0,option.length-2));
+      })
+      
     });
     
   }
 
-  updateOtherValue(event: any, control: FormControlModel) {
+  //Updating the value of the 'other' field of a checkbox group
+  updateOtherValue(event: any, control: FormControlModel): void {
     control.otherValue = event.srcElement.value;
   }
 
-  submit() {
+  submit(): void {
     const data: any = {}
 
     for (const control in this.dynamicForm.controls) {
@@ -162,4 +185,7 @@ export class DynamicFormComponent implements OnInit {
     this.submittedForm = JSON.stringify(data);
   }
 
+  ngOnDestroy(): void {
+    this.autoCompleteSubscription?.unsubscribe();
+  }
 }

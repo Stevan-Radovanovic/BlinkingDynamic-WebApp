@@ -16,7 +16,7 @@ export interface FormControlModel {
     hasAutocomplete?: boolean;
     autocompleteConfig?: {
         url: string;
-        returnType: any;
+        returnType: 'string' | any[];
     }
     //Not sent in JSON
     autoCompleteOptions?: any[];

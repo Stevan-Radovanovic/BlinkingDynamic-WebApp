@@ -23,7 +23,6 @@
               </mat-autocomplete>
             </div>
 
-    
             <!--Select-->
             <mat-select *ngIf="control.type.indexOf('select')!==-1" formControlName="{{control.name}}" 
              multiple="{{control.type==='multiple-select' ? true : false}}">
@@ -42,6 +41,7 @@
           <!--Checkboxes-->
           <div class="checkbox-group" *ngIf="control.type==='checkbox'">
 
+            <!--Hidden select field for Checkboxes form control-->
             <mat-form-field *ngIf="false">
               <mat-select formControlName="{{control.name}}" 
               multiple="{{control.multipleChoiceCheckbox ? true : false}}">
@@ -67,6 +67,7 @@
 
         </div>
       </form>
+      
       <div class="button-wrap">
         <button mat-raised-button color="primary" (click)="submit()" 
         class="margin-top" [disabled]="!dynamicForm.valid">Submit</button>
