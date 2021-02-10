@@ -12,13 +12,18 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCardModule} from '@angular/material/card';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { DynamicHtmlComponent } from './dynamic-html/dynamic-html.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DynamicPdfSignComponent } from './dynamic-pdf-sign/dynamic-pdf-sign.component';
-import { MiniPdfViewComponent } from './dynamic-pdf-sign/mini-pdf-view/mini-pdf-view.component'
+import { MiniPdfViewComponent } from './dynamic-pdf-sign/mini-pdf-view/mini-pdf-view.component';
+import { PdfPreviewModalComponent } from './dynamic-pdf-sign/pdf-preview-modal/pdf-preview-modal.component'
+import {MatDialogModule} from '@angular/material/dialog';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +31,8 @@ import { MiniPdfViewComponent } from './dynamic-pdf-sign/mini-pdf-view/mini-pdf-
     DynamicFormComponent,
     DynamicHtmlComponent,
     DynamicPdfSignComponent,
-    MiniPdfViewComponent
+    MiniPdfViewComponent,
+    PdfPreviewModalComponent
   ],
   imports: [
     BrowserModule,
@@ -40,9 +46,15 @@ import { MiniPdfViewComponent } from './dynamic-pdf-sign/mini-pdf-view/mini-pdf-
     MatButtonModule,
     HttpClientModule,
     MatAutocompleteModule,
-    MatCardModule
+    MatCardModule,
+    MatTooltipModule,
+    MatDialogModule,
+    PdfViewerModule
   ],
   providers: [],
+  entryComponents: [
+    PdfPreviewModalComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
