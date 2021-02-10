@@ -11,17 +11,22 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatCardModule} from '@angular/material/card';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { DynamicHtmlComponent } from './dynamic-html/dynamic-html.component';
-import {HttpClientModule} from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { DynamicPdfSignComponent } from './dynamic-pdf-sign/dynamic-pdf-sign.component';
+import { MiniPdfViewComponent } from './dynamic-pdf-sign/mini-pdf-view/mini-pdf-view.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     DynamicFormComponent,
-    DynamicHtmlComponent
+    DynamicHtmlComponent,
+    DynamicPdfSignComponent,
+    MiniPdfViewComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +39,8 @@ import {HttpClientModule} from '@angular/common/http'
     MatCheckboxModule,
     MatButtonModule,
     HttpClientModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

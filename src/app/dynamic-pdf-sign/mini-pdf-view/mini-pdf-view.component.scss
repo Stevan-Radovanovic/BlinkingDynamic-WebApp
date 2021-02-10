@@ -1,0 +1,48 @@
+.pdf-card {
+    margin: 8px;
+    padding: 32px;
+    display: flex;
+    justify-content: space-between;
+
+    .left-side {
+
+        .pdf-logo {
+            width: 40%;
+            margin-bottom: 11px;
+        }
+
+        .paragraph-div {
+            display: flex;
+
+            .paragraph-1 {
+                font-size: medium;
+                margin-left: 8px;
+                margin-right: 4px;
+                font-weight: bold;
+            }
+    
+            .paragraph-2 {
+                font-size: medium;
+            }    
+
+        }
+
+
+    }
+
+    .right-side {
+        display: flex;
+        flex-direction: column;
+
+        .action-button {
+            margin: 2px;
+            background-color: #ff3f60;
+
+            i {
+                color: white;
+            }
+        }
+    }
+
+
+}

@@ -1,0 +1,27 @@
+<mat-card class="pdf-card">
+    <div class="left-side">
+        <img src="../../../assets/pdf-icon.png" class="pdf-logo"/>
+
+        <div class="paragraph-div">
+            <p class="paragraph-1">Document name:</p>
+            <p class="paragraph-2"> {{miniPdf.name}}</p>
+        </div>
+        <div class="paragraph-div">
+            <p class="paragraph-1">Document size: </p>
+            <p class="paragraph-2"> {{miniPdf.size}}</p>
+        </div>
+        <div class="paragraph-div">
+            <p class="paragraph-1">Document small hash: </p>
+            <p class="paragraph-2"> {{miniPdf.smallHash}}</p>
+        </div>
+
+    </div>
+    <div class="right-side">
+        <button mat-fab class="action-button">
+            <i class="fas fa-eye"></i>
+        </button>
+        <button mat-fab class="action-button">
+            <i class="fas fa-download"></i>
+        </button>
+    </div>
+</mat-card>

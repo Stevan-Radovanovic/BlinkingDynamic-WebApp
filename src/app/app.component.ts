@@ -7,13 +7,29 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'dynamic-form-test';
+  routeSwitcher = 1;
 
   constructor(private router: Router) {}
  
   switchPage() {
-    const route = this.router.url;
-    if(route.indexOf('form')!==-1) this.router.navigate(['/dynamic-html']);
-    else this.router.navigate(['dynamic-form']);
+    if(this.routeSwitcher === 1) {
+      this.routeSwitcher = 2;
+      this.router.navigate(['/dynamic-form']);
+      return;
+    }
+
+    if(this.routeSwitcher === 2) {
+      this.routeSwitcher = 3;
+      this.router.navigate(['/dynamic-html']);
+      return;
+    }
+
+    if(this.routeSwitcher === 3) {
+      this.routeSwitcher = 1;
+      this.router.navigate(['/dynamic-pdf-sign']);
+      return;
+    }
+
   }
   
 }

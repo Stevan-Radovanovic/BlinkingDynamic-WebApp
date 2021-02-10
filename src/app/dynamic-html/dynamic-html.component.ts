@@ -29,7 +29,7 @@ export class DynamicHtmlComponent implements OnInit {
     this.pageData = {
       title : "Dynamic Title",
       content: "<div style='padding: 25px; display: flex; flex-direction: column; justify-content: center'><p>Dynamic Paragraph 1</p><p>Dynamic Paragraph 2</p></div>",
-      actions: [{label: 'Download', type: ButtonType.DOWNLOAD},{label: 'Cancel', type: ButtonType.CANCEL}]
+      actions: [{label: 'Download', type: ButtonType.DOWNLOAD},{label: 'Confirm', type: ButtonType.CONFIRM},{label: 'Cancel', type: ButtonType.CANCEL}]
     }
 
   }
