@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Subscription } from 'rxjs';
 import { AppService } from '../app.service';
 import { FormControlModel } from './form-control.model';
@@ -95,7 +96,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         control.checkboxOptions?.forEach(() => {control.checkboxCheckedValues?.push(false)});
       }
         if(control.hasOtherField) {
-          control.otherValue = '';
+          this.transformedControlArray[control.name + '-internal-other'] = new FormControl({value: '',disabled: true});
           control.checkboxCheckedValues?.push(false);
       }
 
@@ -108,33 +109,48 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   }
 
   //Called with each checbox (un)checking, changes the overall value of the checkboxes form control
-  setCheckboxValue(control: FormControlModel, index: number): void {
+  setCheckboxValue(event: any, control: FormControlModel, index: number): void {
 
-     const currentValue: string[] =[];
+    const checkboxLength = control.checkboxCheckedValues!.length;
+    const currentValue: string[] =[];
 
-     if(!control.checkboxCheckedValues![index]) {
-       control.checkboxCheckedValues![index] = true;
-     } else {
-      control.checkboxCheckedValues![index] = false;
-     }
-
-      if(!control.multipleChoiceCheckbox) {
-
-        for(let i=0;i<control.checkboxCheckedValues!.length;i++) {
-          if(i!==index) control.checkboxCheckedValues![i] = false;
-        }
-
+    if(event instanceof MatCheckboxChange) {
+ 
+      if(!control.checkboxCheckedValues![index]) {
+        control.checkboxCheckedValues![index] = true;
+ 
+        if(index===checkboxLength-1) {
+         this.dynamicForm.get(control.name + '-internal-other')?.enable();
+       }
+ 
+      } else {
+       control.checkboxCheckedValues![index] = false;
+ 
+       if(index===checkboxLength-1) {
+         this.dynamicForm.get(control.name + '-internal-other')?.disable();
+         this.dynamicForm.get(control.name + '-internal-other')?.reset('');
+       }
+ 
       }
+ 
+       if(!control.multipleChoiceCheckbox) {
+ 
+         for(let i=0;i<checkboxLength;i++) {
+           if(i!==index) control.checkboxCheckedValues![i] = false;
+         }
+ 
+       }
+
+      } 
 
       for(let i=0;i<control.checkboxOptions!.length;i++) {
         if(control.checkboxCheckedValues![i]===true) currentValue.push(control.checkboxOptions![i])
       }
 
-      if(control.hasOtherField && control.checkboxCheckedValues![control.checkboxCheckedValues!.length-1]) {
-        currentValue.push(control.otherValue!);
+      if(control.hasOtherField && control.checkboxCheckedValues![checkboxLength-1]) {
+        currentValue.push(this.dynamicForm.get(control.name + '-internal-other')?.value);
       }
 
-      console.log(control.checkboxCheckedValues,currentValue);
       this.dynamicForm.get(control.name)?.setValue(currentValue);
 
   }
@@ -142,7 +158,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   //Called with ech value change for auto complete inputs
   getAutoCompleteOptions(newValue: string, control: FormControlModel): void {
 
-    if(newValue.length<3) {
+    if(!newValue || newValue.length<3) {
       control.autoCompleteOptions = [];
       return;
     } 
@@ -157,7 +173,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       control.autoCompleteOptions = [];
 
       response.payload.forEach((value: any) => {
-        console.log('here');
         let option = '';
         (control.autocompleteConfig?.returnType as any[]).forEach((param) => {
           console.log(param,value[param])
@@ -170,15 +185,15 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     
   }
 
-  //Updating the value of the 'other' field of a checkbox group
-  updateOtherValue(event: any, control: FormControlModel): void {
-    control.otherValue = event.srcElement.value;
-  }
+  onClickAutocomplete(option: string,control: FormControlModel) {
+      this.dynamicForm.get(control.name)?.setValue(option);
+    }
 
   submit(): void {
     const data: any = {}
 
     for (const control in this.dynamicForm.controls) {
+      if(control.endsWith('-internal-other')) continue;
       data[control] = this.dynamicForm.controls[control].value;
     }
 

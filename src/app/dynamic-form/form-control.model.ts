@@ -27,6 +27,5 @@ export interface FormControlModel {
     hasOtherField?: boolean;
     //Not sent in JSON
     checkboxCheckedValues?: boolean[];
-    otherValue?: string;
 }
 

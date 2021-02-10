@@ -17,7 +17,7 @@
               (ngModelChange)="getAutoCompleteOptions($event,control)"
               formControlName="{{control.name}}" value="{{control.value}}" [matAutocomplete]="auto"/>
               <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of control.autoCompleteOptions">
+                <mat-option *ngFor="let option of control.autoCompleteOptions" (click)="onClickAutocomplete(option,control)">
                     {{option}}
                 </mat-option>
               </mat-autocomplete>
@@ -54,13 +54,13 @@
             <p>{{control.label}}</p>
 
             <div *ngFor="let option of control.checkboxOptions; let i = index;">
-              <mat-checkbox (change)="setCheckboxValue(control,i)" [checked]="control.checkboxCheckedValues![i]">{{option}}</mat-checkbox>
+              <mat-checkbox (change)="setCheckboxValue($event,control,i)" [checked]="control.checkboxCheckedValues![i]">{{option}}</mat-checkbox>
             </div>
 
-            <mat-checkbox *ngIf="control.hasOtherField" (change)="setCheckboxValue(control,control.checkboxCheckedValues!.length-1)"
+            <mat-checkbox *ngIf="control.hasOtherField" (change)="setCheckboxValue($event,control,control.checkboxCheckedValues!.length-1)"
              [checked]="control.checkboxCheckedValues![control.checkboxCheckedValues!.length-1]">
-              Other: <input (change)="updateOtherValue($event,control)" 
-              [disabled]="!control.checkboxCheckedValues![control.checkboxCheckedValues!.length-1]" type="text"/>
+              Other: 
+              <input formControlName="{{control.name + '-internal-other'}}" type="text"/>
             </mat-checkbox>
         
           </div>
