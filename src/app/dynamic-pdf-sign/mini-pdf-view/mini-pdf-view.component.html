@@ -8,7 +8,7 @@
         </div>
         <div class="paragraph-div">
             <p class="paragraph-1">Document size: </p>
-            <p class="paragraph-2"> {{miniPdf.size}}</p>
+            <p class="paragraph-2"> {{miniPdf.size}} MB</p>
         </div>
         <div class="paragraph-div">
             <p class="paragraph-1">Document small hash: </p>
@@ -23,10 +23,12 @@
         matTooltipPosition="left">
             <i class="fas fa-eye"></i>
         </button>
-        <button mat-fab class="action-button"
+        <a mat-fab class="action-button"
+        (click)="downloadPdf()"
+        #downloadLink
         matTooltip="Download"
         matTooltipPosition="left">
             <i class="fas fa-download"></i>
-        </button>
+        </a>
     </div>
 </mat-card>
