@@ -179,7 +179,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       response.payload.forEach((value: any) => {
         let option = '';
         (control.autocompleteConfig?.returnType as any[]).forEach((param) => {
-          console.log(param,value[param])
           option = option.concat(value[param]+', ');
         })
         control.autoCompleteOptions!.push(option.slice(0,option.length-2));

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicPdfSignModel } from './dynamic-pdf-sign.model';
 import * as convert from 'xml-js';
+import { MatDialog } from '@angular/material/dialog';
+import { PdfSignModalComponent } from './pdf-sign-modal/pdf-sign-modal.component';
 
 @Component({
   selector: 'app-dynamic-pdf-sign',
@@ -11,7 +13,7 @@ export class DynamicPdfSignComponent implements OnInit {
 
   miniPdfComponents: DynamicPdfSignModel[] = [];
   initialXml: string = '';
-  base64 = `JVBERi0xLjcKCjQgMCBvYmoKKElkZW50aXR5KQplbmRvYmoKNSAwIG9iagooQWRvYmUpCmVuZG9iago4IDAgb2JqCjw8Ci9GaWx0ZXIgL0ZsYXRlRGVjb2RlCi9MZW5ndGggM
+  base64 = `data:application/pdf;base64,JVBERi0xLjcKCjQgMCBvYmoKKElkZW50aXR5KQplbmRvYmoKNSAwIG9iagooQWRvYmUpCmVuZG9iago4IDAgb2JqCjw8Ci9GaWx0ZXIgL0ZsYXRlRGVjb2RlCi9MZW5ndGggM
   TAwNTAzCi9MZW5ndGgxIDM5MjU4NAovVHlwZSAvU3RyZWFtCj4+CnN0cmVhbQp4nOx9CWAU1Rn/92ZmZ/aY3Z29N7ubPbLJhmTJQQIkgQAL4RQR5IgJEgE5BRQQvK94ov
   FC2+JR61Xv1rqEqAFppZVqa0VttbZaD1Q8Wzxaa61K9v+9N7ubjQYh/ZM/kf/8Zt83b9578943b773vfe+eTMLBADykAiwcfysKZPu+1P10aB740WA/I5J4ydMlILGp4BP
   OAH4mZNmTJ9VZfP8FviG5cB5nZNmzRnXfsnKTtAdfy7AxX89atbsiSeXniTi+bMx1+DRs2dNbvpA/iNAw2AA24+nz6qock65GOM4L8YvmNFw9Ox954xuAH7Mq3g8vHH8tKYZ16/4
@@ -159,7 +161,7 @@ export class DynamicPdfSignComponent implements OnInit {
   PDAwMkM+IDwwMDExPiA8MDAyRT4gPDAwMTI+IDwwMDJGPiA8MDAxMz4gPDAwMzA+IDwwMDE0PiA8MDAzMT4gPDAwMTU+IDwwMDMyPiA8MDAxNj4gPDAwMzM+IDwwMDE3PiA8MDAzND4gPDAwMTg+IDwwMDM1PiA8MDAxOT4gPDAwMzY+IDwwMDFBPiA8MDAzNz4gPDAwMUI+IDwwMDM4PiA8MDAxQz4gPDAwMzk+IDwwMDFEPiA8MDAzQT4gPDAwMjQ+IDwwMDQxPiA8MDAyNT4gPDAwNDI+IDwwMDI2PiA8MDA0Mz4gPDAwMjc+IDwwMDQ0PiA8MDAyOD4gPDAwNDU+IDwwMDJBPiA8MDA0Nz4gPDAwMkM+IDwwMDQ5PiA8MDAyRD4gPDAwNEE+IDwwMDJFPiA8MDA0Qj4gPDAwMkY+IDwwMDRDPiA8MDAzMD4gPDAwNEQ+IDwwMDMxPiA8MDA0RT4gPDAwMzI+IDwwMDRGPiA8MDAzMz4gPDAwNTA+IDwwMDM1PiA8MDA1Mj4gPDAwMzY+IDwwMDUzPiA8MDAzNz4gPDAwNTQ+IDwwMDM4PiA8MDA1NT4gPDAwMzk+IDwwMDU2PiA8MDAzRD4gPDAwNUE+IDwwMDQ0PiA8MDA2MT4gPDAwNDU+IDwwMDYyPiA8MDA0Nj4gPDAwNjM+IDwwMDQ3PiA8MDA2ND4gPDAwNDg+IDwwMDY1PiA8MDA0QT4gPDAwNjc+IDwwMDRDPiA8MDA2OT4gPDAwNEQ+IDwwMDZBPiA8MDA0RT4gPDAwNkI+IDwwMDRGPiA8MDA2Qz4gPDAwNTA+IDwwMDZEPiA8MDA1MT4gPDAwNkU+IDwwMDUyPiA8MDA2Rj4gPDAwNTM+IDwwMDcwPiA8MDA1NT4gPDAwNzI+IDwwMDU2PiA8MDA3Mz4gPDAwNTc+IDwwMDc0PiA8MDA1OD4gPDAwNzU+IDwwMDU5PiA8MDA3Nj4gPDAwNUQ+IDwwMDdBPiA8MDBFMj4gPDAxNjA+IDwwMEUzPiA8MDE2MT4gPDAwRTU+IDwwMTdFPiA8MDBGQz4gPDAxMDc+IDwwMEZEPiA8MDEwQz4gPDAwRkU+IDwwMTBEPiA8MDBGRj4gPDAxMTE+IDwwMjM2PiA8MDQwQj4gPDAyM0E+IDwwNDEwPiA8MDIzQz4gPDA0MTI+IDwwMjNFPiA8MDQxND4gPDAyM0Y+IDwwNDE1PiA8MDI0Mj4gPDA0MTg+IDwwMjQ1PiA8MDQxQj4gPDAyNDY+IDwwNDFDPiA8MDI0Nz4gPDA0MUQ+IDwwMjQ4PiA8MDQxRT4gPDAyNDk+IDwwNDFGPiA8MDI0QT4gPDA0MjA+IDwwMjRCPiA8MDQyMT4gPDAyNEM+IDwwNDIyPiA8MDI1MD4gPDA0MjY+IGVuZGJmY2hhciBlbmRjbWFwIENNYXBOYW1lIGN1cnJlbnRkaWN0IC9DTWFwIGRlZmluZXJlc291cmNlIHBvcCBlbmQgZW5kIAplbmRzdHJlYW0KZW5kb2JqCjkgMCBvYmoKWyAzIDMgMjc3IDExIDExIDMzMyAxMiAxMiAzMzMgMTUgMTUgMjc3IDE3IDE3IDI3NyAxOCAxOCAyNzcgMTkgMTkgNTU2IDIwIDIwIDU1NiAyMSAyMSA1NTYgMjIgMjIgNTU2IDIzIDIzIDU1NiAyNCAyNCA1NTYgMjUgMjUgNTU2IDI2IDI2IDU1NiAyNyAyNyA1NTYgMjggMjggNTU2IDI5IDI5IDI3NyAzNiAzNiA2NjYgMzcgMzcgNjY2IDM4IDM4IDcyMiAzOSAzOSA3MjIgNDAgNDAgNjY2IDQyIDQyIDc3NyA0NCA0NCAyNzcgNDUgNDUgNTAwIDQ2IDQ2IDY2NiA0NyA0NyA1NTYgNDggNDggODMzIDQ5IDQ5IDcyMiA1MCA1MCA3NzcgNTEgNTEgNjY2IDUzIDUzIDcyMiA1NCA1NCA2NjYgNTUgNTUgNjEwIDU2IDU2IDcyMiA1NyA1NyA2NjYgNjEgNjEgNjEwIDY4IDY4IDU1NiA2OSA2OSA1NTYgNzAgNzAgNTAwIDcxIDcxIDU1NiA3MiA3MiA1NTYgNzQgNzQgNTU2IDc2IDc2IDIyMiA3NyA3NyAyMjIgNzggNzggNTAwIDc5IDc5IDIyMiA4MCA4MCA4MzMgODEgODEgNTU2IDgyIDgyIDU1NiA4MyA4MyA1NTYgODUgODUgMzMzIDg2IDg2IDUwMCA4NyA4NyAyNzcgODggODggNTU2IDg5IDg5IDUwMCA5MyA5MyA1MDAgMjI2IDIyNiA2NjYgMjI3IDIyNyA1MDAgMjI5IDIyOSA1MDAgMjUyIDI1MiA1MDAgMjUzIDI1MyA3MjIgMjU0IDI1NCA1MDAgMjU1IDI1NSA1NTYgNTY2IDU2NiA4NTQgNTcwIDU3MCA2NjYgNTcyIDU3MiA2NjYgNTc0IDU3NCA2NzcgNTc1IDU3NSA2NjYgNTc4IDU3OCA3MTggNTgxIDU4MSA2NTYgNTgyIDU4MiA4MzMgNTgzIDU4MyA3MjIgNTg0IDU4NCA3NzcgNTg1IDU4NSA3MTggNTg2IDU4NiA2NjYgNTg3IDU4NyA3MjIgNTg4IDU4OCA2MTAgNTkyIDU5MiA3MzkgXQplbmRvYmoKNiAwIG9iagpbIC04NTQgLTIxMSA4NTQgOTA1IF0KZW5kb2JqCjcgMCBvYmoKODU0CmVuZG9iagoyIDAgb2JqCjw8Ci9Db3VudCAxCi9LaWRzIFsgMyAwIFIgXQovVHlwZSAvUGFnZXMKPj4KZW5kb2JqCjEgMCBvYmoKPDwKL1BhZ2VzIDIgMCBSCi9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagoxNSAwIG9iago8PAovQXV0aG9yIChNaWxhbikKL0NyZWF0aW9uRGF0ZSAoRDoyMDIwMDkyODE0MTI0NCswMicwMCcpCi9Nb2REYXRlIChEOjIwMjAwOTI4MTQxMjQ0KzAyJzAwJykKL1Byb2R1Y2VyIChNaWNyb3NvZnQ6IFByaW50IFRvIFBERikKL1RpdGxlIChQb2RhY2kgaXogbGnEjW5lIGthcnRlIG9zb2JlINCh0KLQldCS0JDQnSDQoNCQ0JTQntCS0JDQndCe0JLQmNCLKQo+PgplbmRvYmoKeHJlZgowIDE2DQowMDAwMDAwMDAwIDY1NTM1IGYNCjAwMDAxMTM5NDMgMDAwMDAgbg0KMDAwMDExMzg4NCAwMDAwMCBuDQowMDAwMTExMzE0IDAwMDAwIG4NCjAwMDAwMDAwMDkgMDAwMDAgbg0KMDAwMDAwMDAzNSAwMDAwMCBuDQowMDAwMTEzODI4IDAwMDAwIG4NCjAwMDAxMTM4NjUgMDAwMDAgbg0KMDAwMDAwMDA1OCAwMDAwMCBuDQowMDAwMTEyOTc3IDAwMDAwIG4NCjAwMDAxMTE0OTMgMDAwMDAgbg0KMDAwMDEwMDY2NiAwMDAwMCBuDQowMDAwMTAxMTM4IDAwMDAwIG4NCjAwMDAxMDg3MTcgMDAwMDAgbg0KMDAwMDExMTIzOSAwMDAwMCBuDQowMDAwMTEzOTkyIDAwMDAwIG4NCnRyYWlsZXIKPDwKL0luZm8gMTUgMCBSCi9Sb
   290IDEgMCBSCi9TaXplIDE2Cj4+CnN0YXJ0eHJlZgoxMTQyMTYKJSVFT0YK`
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getData();
@@ -170,24 +172,24 @@ export class DynamicPdfSignComponent implements OnInit {
     this.initialXml = `
     <?xml version="1.0" encoding="UTF-8"?>
     <root>
-       <element>
+       <document>
           <base64>${this.base64}</base64>
           <name>document1.pdf</name>
           <size>22</size>
           <smallHash>1969</smallHash>
-       </element>
-       <element>
-          <base64>base2</base64>
+       </document>
+       <document>
+          <base64>${this.base64}</base64>
           <name>document2.pdf</name>
           <size>22</size>
           <smallHash>2012</smallHash>
-       </element>
-       <element>
-          <base64>base3</base64>
+       </document>
+       <document>
+          <base64>${this.base64}</base64>
           <name>document3.pdf</name>
           <size>22</size>
           <smallHash>2019</smallHash>
-       </element>
+       </document>
     </root>
     `
     this.transformXMLtoJSON(); 
@@ -196,7 +198,7 @@ export class DynamicPdfSignComponent implements OnInit {
   transformXMLtoJSON() {
 
     const convertResult = convert.xml2json(this.initialXml,{compact: true, textKey: 'text', ignoreDeclaration: true});
-    const preTransformArray = Object.values(JSON.parse(convertResult).root.element);
+    const preTransformArray = Object.values(JSON.parse(convertResult).root.document);
     this.miniPdfComponents = preTransformArray.map((value: any) => {
       value.base64 = value.base64.text;
       value.name = value.name.text;
@@ -205,6 +207,10 @@ export class DynamicPdfSignComponent implements OnInit {
       return value;
     })
 
+  }
+
+  openSignPdfModal() {
+    this.dialog.open(PdfSignModalComponent,{data: {}, height: '800px', width: '800px'})
   }
 
 }

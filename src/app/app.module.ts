@@ -22,7 +22,7 @@ import { DynamicPdfSignComponent } from './dynamic-pdf-sign/dynamic-pdf-sign.com
 import { MiniPdfViewComponent } from './dynamic-pdf-sign/mini-pdf-view/mini-pdf-view.component';
 import { PdfPreviewModalComponent } from './dynamic-pdf-sign/pdf-preview-modal/pdf-preview-modal.component'
 import {MatDialogModule} from '@angular/material/dialog';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { PdfSignModalComponent } from './dynamic-pdf-sign/pdf-sign-modal/pdf-sign-modal.component';
 
 
 @NgModule({
@@ -32,7 +32,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     DynamicHtmlComponent,
     DynamicPdfSignComponent,
     MiniPdfViewComponent,
-    PdfPreviewModalComponent
+    PdfPreviewModalComponent,
+    PdfSignModalComponent
   ],
   imports: [
     BrowserModule,
@@ -48,12 +49,12 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     MatAutocompleteModule,
     MatCardModule,
     MatTooltipModule,
-    MatDialogModule,
-    PdfViewerModule
+    MatDialogModule
   ],
   providers: [],
   entryComponents: [
-    PdfPreviewModalComponent
+    PdfPreviewModalComponent,
+    PdfSignModalComponent
   ],
   bootstrap: [AppComponent]
 })

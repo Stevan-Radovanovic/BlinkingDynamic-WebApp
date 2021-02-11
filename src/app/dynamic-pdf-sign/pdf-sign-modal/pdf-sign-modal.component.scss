@@ -1,5 +1,5 @@
 .wrap {
-
+    
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -11,23 +11,20 @@
         font-weight: bold;
     }
 
-    .iframe {
-        height: 100%;
-        width: 100%;
-        overflow: auto;
-        border: none;
-    }
-
     .content {
-        height: 100%;
-        overflow-y: hidden;
+        overflow-y: auto;
         overflow-x: hidden;
     }
 
     .buttons-wrapper {
-        margin-top: 11px;
         display: flex;
         justify-content: center;
+    
+        .confirm-button {
+            color: white;
+            background-color: #75A053;
+            margin-right: 4px;
+        }
     
         .cancel-button {
             color: white;

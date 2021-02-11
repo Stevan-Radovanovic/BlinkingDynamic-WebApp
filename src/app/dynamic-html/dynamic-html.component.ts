@@ -21,8 +21,6 @@ export class DynamicHtmlComponent implements OnInit {
 
   ngAfterViewInit() {
     this.fillContentDiv();
-    console.log(this.contentDiv);
-
   }
 
   getDynamicHtml() {

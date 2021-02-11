@@ -1,3 +1,9 @@
-<pdf-viewer [src]="base64" [render-text]="false" [autoresize]="true"
-[show-all]="true" [fit-to-page]="true">
-</pdf-viewer>
+<div class="wrap">
+    <p class="title">PDF Preview</p>
+    <div class="content">
+        <iframe class="iframe" [src]="newBase64" height="100%" width="100%"></iframe>
+    </div>
+    <div class="buttons-wrapper">
+        <button mat-raised-button class="cancel-button" (click)="closeModal()">Exit</button>
+    </div>
+</div>

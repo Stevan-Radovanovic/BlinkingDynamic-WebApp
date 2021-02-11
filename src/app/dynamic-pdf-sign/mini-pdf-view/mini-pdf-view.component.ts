@@ -18,7 +18,7 @@ export class MiniPdfViewComponent implements OnInit {
   }
 
   openPreview() {
-    this.dialog.open(PdfPreviewModalComponent,{data: {base64: this.miniPdf.base64}})
+    this.dialog.open(PdfPreviewModalComponent,{data: {base64: this.miniPdf.base64}, height: '800px', width: '800px'})
   }
 
 }

@@ -14,19 +14,19 @@ export class AppComponent {
   switchPage() {
     if(this.routeSwitcher === 1) {
       this.routeSwitcher = 2;
-      this.router.navigate(['/dynamic-form']);
+      this.router.navigate(['/dynamic-html']);
       return;
     }
 
     if(this.routeSwitcher === 2) {
       this.routeSwitcher = 3;
-      this.router.navigate(['/dynamic-html']);
+      this.router.navigate(['/dynamic-pdf-sign']);
       return;
     }
 
     if(this.routeSwitcher === 3) {
       this.routeSwitcher = 1;
-      this.router.navigate(['/dynamic-pdf-sign']);
+      this.router.navigate(['/dynamic-form']);
       return;
     }
 
