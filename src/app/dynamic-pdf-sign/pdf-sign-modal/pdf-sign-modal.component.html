@@ -1,7 +1,27 @@
 <div class="wrap">
-    <p class="title">Document signing</p>
-    <p class="content">Content</p>
-    <div class="buttons-wrapper">
-        <button mat-raised-button class="cancel-button" (click)="closeModal()">Exit</button>
+    <div class="title-wrap">
+        <div></div>
+        <p class="title">Document signing</p>
+        <button mat-icon-button (click)="closeModal()" class="close-button"><i class="fas fa-times"></i></button>
     </div>
+
+    <div class="content">
+        <p class="otp-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+            when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+            It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
+            It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
+            and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        </p>
+        <mat-form-field>
+            <mat-label>OTP</mat-label>
+            <input matInput #otpInput/>
+        </mat-form-field> 
+    </div>
+
+    <div class="buttons-wrapper">
+        <button mat-raised-button class="verify-button" [disabled]="otpInput.value===''">Verify</button>
+        <button mat-raised-button class="resend-button">Resend</button>
+    </div>
+
 </div>

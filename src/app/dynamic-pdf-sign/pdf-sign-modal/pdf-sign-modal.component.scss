@@ -5,30 +5,52 @@
     justify-content: space-between;
     height: 100%;
 
-    .title {
-        font-size: x-large;
-        text-align: center;
-        font-weight: bold;
+    .title-wrap {
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    
+        .title {
+            font-size: x-large;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 0px;
+            margin-left: 36px;
+        }
+    
     }
 
     .content {
         overflow-y: auto;
         overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .otp-text {
+            text-align: justify;
+        }
     }
 
     .buttons-wrapper {
         display: flex;
         justify-content: center;
     
-        .confirm-button {
+        .verify-button {
             color: white;
             background-color: #75A053;
             margin-right: 4px;
+
+            &:disabled {
+                background-color:lightgray ;
+                color: black;
+            }
         }
     
-        .cancel-button {
+        .resend-button {
             color: white;
-            background-color: #ff3f60
+            background-color: #5f75f4;
         }
     }
 }

@@ -210,7 +210,7 @@ export class DynamicPdfSignComponent implements OnInit {
   }
 
   openSignPdfModal() {
-    this.dialog.open(PdfSignModalComponent,{data: {}, height: '800px', width: '800px'})
+    this.dialog.open(PdfSignModalComponent,{data: {}, height: '500px', width: '500px'})
   }
 
 }

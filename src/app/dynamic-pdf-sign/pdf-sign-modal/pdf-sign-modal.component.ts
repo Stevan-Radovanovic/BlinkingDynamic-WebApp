@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
 @Component({
   selector: 'app-pdf-sign-modal',
   templateUrl: './pdf-sign-modal.component.html',
@@ -15,6 +14,14 @@ export class PdfSignModalComponent implements OnInit {
 
   closeModal() {
     this.dialogRef.close();
+  }
+
+  verify() {
+    console.log('Verifying...');
+  }
+
+  resend() {
+    console.log('Resending...');
   }
 
 }
