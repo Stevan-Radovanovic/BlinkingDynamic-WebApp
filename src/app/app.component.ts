@@ -23,6 +23,10 @@ export class AppComponent {
         break;
       }
       case '/dynamic-pdf-sign': {
+        this.router.navigateByUrl('/credit-calculator');
+        break;
+      }
+      case '/credit-calculator': {
         this.router.navigateByUrl('/dynamic-form');
         break;
       }

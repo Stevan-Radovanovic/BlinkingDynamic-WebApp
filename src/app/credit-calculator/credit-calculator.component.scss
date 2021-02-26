@@ -1,0 +1,44 @@
+.calculator-wrapper {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .sliders {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 75%;
+
+        .slider {
+            
+            display: flex;
+            width: 100%;
+            align-items: center;
+            margin: 22px;
+
+            p {
+                margin-bottom: 0px;
+                width: 15%;
+            }
+
+            mat-slider {
+                width: 80%;
+            }
+        }
+
+
+    }
+
+    .checkbox-aik {
+        width: 75%;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .calculate-button {
+
+    }
+}

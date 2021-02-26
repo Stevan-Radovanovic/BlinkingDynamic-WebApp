@@ -1,0 +1,24 @@
+<div class="calculator-wrapper">
+
+    <div class="sliders">
+        <div class="slider">
+            <p>Iznos (€): </p>
+            <mat-slider [min]="creditAmountLimits.min" [max]="creditAmountLimits.max" #slider1
+            step="1" thumbLabel tickInterval="1" [displayWith]="formatCreditLabel"></mat-slider>
+        </div>
+        <div class="slider">
+            <p>Period otplate (Godine): </p>
+            <mat-slider [min]="paymentPeriodLimits.min" [max]="paymentPeriodLimits.max" #slider2
+            step="1" thumbLabel tickInterval="1" [displayWith]="formatPeriodLabel"></mat-slider> 
+        </div>
+   
+    </div>
+
+    <div class="checkbox-aik">
+        <mat-checkbox [checked]="isCheckboxChecked" (change)="changeLimits()">Prenos plate u AIK banku?</mat-checkbox>
+    </div>
+
+    <div class="calculate-button">
+
+    </div>
+</div>

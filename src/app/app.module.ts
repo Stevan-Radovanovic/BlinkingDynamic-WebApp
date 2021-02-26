@@ -13,6 +13,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCardModule} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSliderModule} from '@angular/material/slider';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
@@ -23,6 +24,7 @@ import { MiniPdfViewComponent } from './dynamic-pdf-sign/mini-pdf-view/mini-pdf-
 import { PdfPreviewModalComponent } from './dynamic-pdf-sign/pdf-preview-modal/pdf-preview-modal.component'
 import {MatDialogModule} from '@angular/material/dialog';
 import { PdfSignModalComponent } from './dynamic-pdf-sign/pdf-sign-modal/pdf-sign-modal.component';
+import { CreditCalculatorComponent } from './credit-calculator/credit-calculator.component';
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { PdfSignModalComponent } from './dynamic-pdf-sign/pdf-sign-modal/pdf-sig
     DynamicPdfSignComponent,
     MiniPdfViewComponent,
     PdfPreviewModalComponent,
-    PdfSignModalComponent
+    PdfSignModalComponent,
+    CreditCalculatorComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,8 @@ import { PdfSignModalComponent } from './dynamic-pdf-sign/pdf-sign-modal/pdf-sig
     MatAutocompleteModule,
     MatCardModule,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSliderModule
   ],
   providers: [],
   entryComponents: [
