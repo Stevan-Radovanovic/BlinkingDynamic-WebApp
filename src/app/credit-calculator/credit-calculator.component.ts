@@ -15,6 +15,8 @@ export class CreditCalculatorComponent implements OnInit {
   @ViewChild('slider1') slider1: MatSlider;
   @ViewChild('slider2') slider2: MatSlider;
 
+  calculationMade = false;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -65,6 +67,14 @@ export class CreditCalculatorComponent implements OnInit {
     this.slider1.writeValue(this.creditAmountLimits.min);
     this.slider2.writeValue(this.paymentPeriodLimits.min);
 
+  }
+
+  calculateCredit() {
+    this.calculationMade = true;
+  }
+
+  repeatCalculation() {
+    this.calculationMade = false;
   }
 
 }

@@ -20,7 +20,6 @@
             margin: 22px;
 
             p {
-                margin-bottom: 0px;
                 width: 15%;
             }
 
@@ -40,5 +39,32 @@
 
     .calculate-button {
 
+        margin-top: 40px;
+
+        button {
+            width: 75%;
+            display: flex;
+            justify-content: center;
+            background-color: #ff3f60;
+            width: 140px;
+            color: #fafafa
+        }
+    }
+
+    .calculation-div {
+        border-radius: 6px;
+        margin-top: 40px;
+        border: 2px solid #ff3f60;
+        width: 100%;
+        height: 200px;
+        position: relative;
+
+        .repeat-button {
+            background-color: #ff3f60;
+            color: #fafafa;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+        }
     }
 }

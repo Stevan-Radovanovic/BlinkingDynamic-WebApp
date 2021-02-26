@@ -18,7 +18,13 @@
         <mat-checkbox [checked]="isCheckboxChecked" (change)="changeLimits()">Prenos plate u AIK banku?</mat-checkbox>
     </div>
 
-    <div class="calculate-button">
+    <div class="calculate-button" *ngIf="!calculationMade">
+        <button mat-raised-button (click)="calculateCredit()">Izračunaj</button>
+    </div>
 
+    <div class="calculation-div" *ngIf="calculationMade">
+        <button mat-fab class="repeat-button" (click)="repeatCalculation()" matTooltip="Ponovi računicu" matTooltipPosition="left">
+            <i class="fas fa-redo fa-lg"></i>
+        </button>
     </div>
 </div>
