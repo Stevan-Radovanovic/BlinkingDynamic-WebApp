@@ -13,7 +13,7 @@ export interface CalculateOfferResponseModel {
     totalInterest: number;
     totalRepayment: number;
     totalFees: number;
-    feeDetails: FeeDetailsModel;
+    feeDetails?: FeeDetailsModel;
     successful: boolean;
     error: string;
 

@@ -1,8 +1,8 @@
 <div class="calculator-wrapper">
 
-    <div class="sliders">
+    <div class="sliders" *ngIf="!calculationMade">
         <div class="slider">
-            <p>Iznos (€): </p>
+            <p>Iznos (RSD): </p>
             <mat-slider [min]="creditAmountLimits.min" [max]="creditAmountLimits.max" #slider1
             step="1" thumbLabel tickInterval="1" [displayWith]="formatCreditLabel"></mat-slider>
         </div>
@@ -14,12 +14,14 @@
    
     </div>
 
-    <div class="checkbox-aik">
-        <mat-checkbox [checked]="isCheckboxChecked" (change)="changeLimits()">Prenos plate u AIK banku?</mat-checkbox>
+    <div class="checkbox-aik" *ngIf="!calculationMade">
+        <mat-checkbox [checked]="isCheckboxChecked" (change)="changeLimits()">
+            Prenos plate u AIK banku?
+        </mat-checkbox>
     </div>
 
     <div class="calculate-button" *ngIf="!calculationMade">
-        <button mat-raised-button (click)="calculateCredit()">Izračunaj</button>
+        <button mat-raised-button (click)="calculateOffer()">Izračunaj</button>
     </div>
 
     <div class="calculation-div" *ngIf="calculationMade">
@@ -27,7 +29,21 @@
             <i class="fas fa-redo fa-lg"></i>
         </button>
         <div class="content">
-            Računica
+            <p class="title">Podaci</p>
+            <div class="offer-data">
+                <p><b>Iznos kredita:</b> {{calculateOfferParams.amount}}000 RSD</p>
+                <p><b>Period otplate u mesecima:</b> {{calculateOfferParams.paymentPeriod}}</p>
+                <p><b>{{isCheckboxChecked ? 'Sa prenosom plate u AIK banku.' : 'Bez prenosa plate u AIK banku.'}}</b></p>
+            </div>
+            <hr>
+            <p class="title">Ponuda</p>
+            <div class="offer-data">
+                <p><b>Mesečna rata:</b> {{offerData.annuity}} RSD</p>
+                <p><b>Efektivna kamatna stopa</b>: {{offerData.effectiveInterestRate}} %</p>
+                <p><b>Ukupna kamata:</b> {{offerData.totalInterest}} RSD</p>
+                <p><b>Ukupni iznos otplate:</b> {{offerData.totalRepayment}} RSD</p>
+                <p><b>Naknade i troškovi: </b>{{offerData.totalFees}} RSD</p>
+            </div>
         </div>
         <button mat-raised-button class="accept-button">
             Potvrdi
