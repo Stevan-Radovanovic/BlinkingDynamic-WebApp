@@ -52,7 +52,7 @@ export class CreditCalculatorComponent implements OnInit {
   }
 
   formatPeriodLabel(value: number) {
-    return value + 'g'
+    return value;
   }
 
   changeLimits() {
