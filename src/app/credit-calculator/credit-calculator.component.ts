@@ -38,7 +38,7 @@ export class CreditCalculatorComponent implements OnInit {
   getLimitsWhenCheckboxIsUnchecked(): void {
     this.creditAmountLimits = {
       min: 4,
-      max: 16
+      max: 400
     };
 
     this.paymentPeriodLimits = {
