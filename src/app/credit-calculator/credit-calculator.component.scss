@@ -15,17 +15,47 @@
         .slider {
             
             display: flex;
+            flex-direction: column;
             width: 100%;
             align-items: center;
             margin: 22px;
 
-            p {
-                width: 15%;
+            .title {
+                color: #636569;
+                font-weight: bold;
+                font-size: 16px;
+                margin-bottom: 12px;
             }
 
-            mat-slider {
-                width: 80%;
+
+            .slider-with-limits {
+                display: flex;
+                width: 100%;
+
+                mat-slider {
+                    width: 94%;
+                }
+
+                %limits {
+                    color: #636569;
+                    font-weight: bold;
+                    font-size: 16px;
+                    width: 3%;
+                }
+
+                .limits-min {
+                    @extend %limits;
+                    margin-right: 9px;
+                }
+
+                .limits-max {
+                    @extend %limits;
+                    margin-left: 4px;
+                }
             }
+            
+
+
         }
 
 
@@ -98,11 +128,19 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                
+
                 p {
                     color: #636569;
                 }
             }
+        }
+
+        .error {
+            font-size: 20px;
+            font-weight: bold;
+            color: #636569;
+            margin-top: 5px;
+            text-align: center;
         }
     }
 }

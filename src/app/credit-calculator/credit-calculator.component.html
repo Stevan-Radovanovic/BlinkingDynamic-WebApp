@@ -2,14 +2,22 @@
 
     <div class="sliders" *ngIf="!calculationMade">
         <div class="slider">
-            <p>Iznos (RSD): </p>
-            <mat-slider [min]="creditAmountLimits.min" [max]="creditAmountLimits.max" #slider1
-            step="1" thumbLabel tickInterval="1" [displayWith]="formatCreditLabel"></mat-slider>
+            <p class="title">Iznos (RSD): </p>
+            <div class="slider-with-limits">
+                <p class="limits-min">{{creditAmountLimits.min}}k</p>
+                <mat-slider [min]="creditAmountLimits.min" [max]="creditAmountLimits.max" #slider1
+                step="1" thumbLabel tickInterval="1" [displayWith]="formatCreditLabel"></mat-slider>
+                <p class="limits-max">{{creditAmountLimits.max}}k</p>
+            </div>
         </div>
         <div class="slider">
-            <p>Period otplate (Meseci): </p>
-            <mat-slider [min]="paymentPeriodLimits.min" [max]="paymentPeriodLimits.max" #slider2
-            step="1" thumbLabel tickInterval="1" [displayWith]="formatPeriodLabel"></mat-slider> 
+            <p class="title">Period otplate (Meseci): </p>
+            <div class="slider-with-limits">
+                <p class="limits-min">{{paymentPeriodLimits.min}}</p>
+                <mat-slider [min]="paymentPeriodLimits.min" [max]="paymentPeriodLimits.max" #slider2
+                step="1" thumbLabel tickInterval="1" [displayWith]="formatPeriodLabel"></mat-slider>
+                <p class="limits-max">{{paymentPeriodLimits.max}}</p>
+            </div>
         </div>
    
     </div>
@@ -28,7 +36,7 @@
         <button mat-fab class="repeat-button" (click)="repeatCalculation()" matTooltip="Ponovi računicu" matTooltipPosition="left">
             <i class="fas fa-redo fa-lg"></i>
         </button>
-        <div class="content">
+        <div class="content" *ngIf="offerData.successful">
             <p class="title">Podaci</p>
             <div class="offer-data">
                 <p><b>Iznos kredita:</b> {{calculateOfferParams.amount}}000 RSD</p>
@@ -39,14 +47,15 @@
             <p class="title">Ponuda</p>
             <div class="offer-data">
                 <p><b>Mesečna rata:</b> {{offerData.annuity}} RSD</p>
-                <p><b>Efektivna kamatna stopa</b>: {{offerData.effectiveInterestRate}} %</p>
+                <p><b>Efektivna kamatna stopa</b>: {{offerData.effectiveInterestRate}}%</p>
                 <p><b>Ukupna kamata:</b> {{offerData.totalInterest}} RSD</p>
                 <p><b>Ukupni iznos otplate:</b> {{offerData.totalRepayment}} RSD</p>
                 <p><b>Naknade i troškovi: </b>{{offerData.totalFees}} RSD</p>
             </div>
         </div>
-        <button mat-raised-button class="accept-button">
+        <button mat-raised-button class="accept-button" (click)="sendOfferData()" *ngIf="offerData.successful">
             Potvrdi
         </button>
+        <p class="error" *ngIf="!offerData.successful">{{offerData.error}}</p>
     </div>
 </div>

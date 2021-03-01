@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
 import { CalculateOfferRequestModel, CalculateOfferResponseModel } from './models/calculate-offer.models';
+import { SendOfferRequestModel } from './models/send-offer-data.models';
 
 @Component({
   selector: 'app-credit-calculator',
@@ -29,25 +30,25 @@ export class CreditCalculatorComponent implements OnInit {
 
   getInitialLimits(): void {
     this.creditAmountLimits = {
-      min: 2,
-      max: 12
+      min: 200,
+      max: 1200
     };
 
     this.paymentPeriodLimits = {
-      min: 1,
-      max: 6
+      min: 100,
+      max: 600
     };
   }
 
   getLimitsWhenCheckboxIsUnchecked(): void {
     this.creditAmountLimits = {
-      min: 4,
+      min: 400,
       max: 400
     };
 
     this.paymentPeriodLimits = {
-      min: 3,
-      max: 9
+      min: 300,
+      max: 900
     };
   }
 
@@ -88,10 +89,18 @@ export class CreditCalculatorComponent implements OnInit {
         totalInterest: 111000,
         totalRepayment: 654000,
         successful: true,
-        error: ''
+        error: 'Došlo je do greške pri obradi vaše ponude. Molimo vas pokušajte ponovo.'
       }
       this.calculationMade = true;
     }, 1000)
+  }
+
+  sendOfferData() {
+    const params: SendOfferRequestModel = {
+      ...this.calculateOfferParams,
+      realizationMethod: 'AU' 
+    }
+    this.calculationMade = false;
   }
 
   repeatCalculation() {
