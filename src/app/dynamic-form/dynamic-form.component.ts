@@ -85,6 +85,58 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         hasOtherField: true,
       }
     ];
+
+    this.formControlArray = [
+      {
+        label: "Status zaposlenja",
+        name: "employmentStatus",
+        required: true,
+        value: [],
+        type: "checkbox",
+        checkboxOptions: ['Zaposlen','Nezaposlen','Penzioner','Vlasnik preduzeća','Preduzetnik','Poljoprivrednik','Student'],
+        multipleChoiceCheckbox: false,
+      },
+      {
+        label: "Svrha i namena poslovnog odnosa / otvaranja računa",
+        name: "accountOpeningPurpose",
+        required: true,
+        value: [],
+        type: "checkbox",
+        checkboxOptions: ['Radi prijema zarade','za potrebe isplate kupoprodajne cene po ugovoru o prometu nepokretnosti i pokretnih stvari','za prijem priliva i naknada po osnovu povremenih i privremenih poslova','za prijem priliva iz inostranstva','za potrebe polaganja depozita kod Banke'],
+        multipleChoiceCheckbox: false,
+        hasOtherField: true
+      },
+      {
+        label: "Obim očekivane aktivnosti preko računa – očekivano kretanje sredstava na računu",
+        name: "volumeOfExpectedActivities1",
+        required: true,
+        value: [],
+        type: "checkbox",
+        checkboxOptions: ['Mesečno','Polugodišnje','Godišnje'],
+        multipleChoiceCheckbox: false,
+      },
+      {
+        label: "",
+        name: "volumeOfExpectedActivities2",
+        required: true,
+        value: [],
+        type: "checkbox",
+        checkboxOptions: ['Do 100.000 RSD','do 500.000 RSD','Do 1.000.000 RSD'],
+        multipleChoiceCheckbox: false,
+        hasOtherField: true
+      },
+      {
+        label: "Stepen stručne spreme",
+        name: "professionalDegree",
+        required: true,
+        value: [],
+        type: "checkbox",
+        checkboxOptions: ['Bez osnovne','Osnovna škola','Stručna škola','Srednja škola',
+        'Viša škola','Visoka sprema','Magistratura','Doktorat','Nepoznata'],
+        multipleChoiceCheckbox: false,
+        hasOtherField: true
+      },
+    ]
   }
 
   //Transform each object form initial JSON objects array into a form control
