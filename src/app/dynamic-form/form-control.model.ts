@@ -14,10 +14,12 @@ export interface FormControlModel {
     //Input Fields only
     inputType?: string;
     hasAutocomplete?: boolean;
+    autocompleteLocal?: boolean;
     autocompleteConfig?: {
-        url: string;
+        url?: string;
         returnType: 'string' | any[];
-    }
+        localAutocompletePool?: any[];
+    };
     //Not sent in JSON
     autoCompleteOptions?: any[];
 

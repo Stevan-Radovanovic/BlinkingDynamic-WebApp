@@ -45,7 +45,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     this.formControlArray = this.formJson?.controls;
 
-    this.getForm2();
+    this.getForm3();
    
   }
 
@@ -163,6 +163,42 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     ]
   }
 
+  getForm3(): void {
+    this.formControlArray = [
+      {
+        name: 'Local Auto',
+        label:'Local Auto',
+        value:'',
+        type:'input',
+        required: true,
+        inputType: 'text',
+        hasAutocomplete: true,
+        autocompleteLocal: true,
+        autocompleteConfig: {
+          localAutocompletePool: [
+          {
+            name1: 'Test1',
+            name2: 'Pipi1'
+          },
+          {
+            name1: 'Test2',
+            name2: 'Pipi2'
+          },
+          {
+            name1: 'Test3',
+            name2: 'Pipi3'
+          },
+          {
+            name1: 'Test4',
+            name2: 'Pipi4'
+          },
+        ],
+          returnType: ['name1','name2']
+        }
+      },
+    ]
+  }
+
   //Transform each object form initial JSON objects array into a form control
   transformToControls(): void {
     this.formControlArray.forEach((control) => {
@@ -235,7 +271,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
   }
 
-  //Called with ech value change for auto complete inputs
+  autocompleteBranch(newValue: string, control: FormControlModel) {
+    control.autocompleteLocal ? this.getLocalAutoCompleteOptions(newValue, control) : this.getAutoCompleteOptions(newValue, control)
+  }
+
+
+  //Called with each value change for auto complete inputs
   getAutoCompleteOptions(newValue: string, control: FormControlModel): void {
 
     if(!newValue || newValue.length<3) {
@@ -261,6 +302,36 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       })
       
     });
+    
+  }
+
+  //Called with each value change for auto complete inputs with local autocomplete bases
+  getLocalAutoCompleteOptions(newValue: string, control: FormControlModel): void {
+
+    if(!newValue || newValue.length<3) {
+      control.autoCompleteOptions = [];
+      return;
+    }
+
+    console.log(control.autocompleteConfig.localAutocompletePool);
+
+    const availableOptions = control.autocompleteConfig.localAutocompletePool.filter(option => {
+      console.log(JSON.stringify(option).indexOf(newValue),option,newValue)
+      return JSON.stringify(option).toLowerCase().indexOf(newValue.toLowerCase()) !== -1
+    });
+
+    if(control.autocompleteConfig?.returnType==='string') {
+      control.autoCompleteOptions = availableOptions;
+      return;
+    }
+
+    availableOptions.forEach((value: any) => {
+      let option = '';
+      (control.autocompleteConfig?.returnType as any[]).forEach((param) => {
+        option = option.concat(value[param]+', ');
+      })
+      control.autoCompleteOptions!.push(option.slice(0,option.length-2));
+    })
     
   }
 

@@ -25,7 +25,7 @@
             <!--AutoComplete Input-->
             <div *ngIf="control.hasAutocomplete">
               <input matInput type="{{control.inputType}}" *ngIf="control.type==='input'" 
-              (ngModelChange)="getAutoCompleteOptions($event,control)"
+              (ngModelChange)="autocompleteBranch($event,control)"
               formControlName="{{control.name}}" value="{{control.value}}" [matAutocomplete]="auto"/>
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of control.autoCompleteOptions" (click)="onClickAutocomplete(option,control)">
