@@ -175,25 +175,309 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         hasAutocomplete: true,
         autocompleteLocal: true,
         autocompleteConfig: {
+          returnType: ['naziv','adresa','mesto'],
           localAutocompletePool: [
-          {
-            name1: 'Test1',
-            name2: 'Pipi1'
-          },
-          {
-            name1: 'Test2',
-            name2: 'Pipi2'
-          },
-          {
-            name1: 'Test3',
-            name2: 'Pipi3'
-          },
-          {
-            name1: 'Test4',
-            name2: 'Pipi4'
-          },
+              {
+                naziv: "Filijala Beograd-Grawe",
+                adresa: "Bul.  Mihajla Pupina 115đ",
+                mesto: "Novi Beograd",
+                mail: "Filijala_Grawe@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala  Fontana",
+                adresa: "Otona Župančića 1",
+                mesto: "Novi Beograd",
+                mail: "Filijala_Fontana@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Vidikovac",
+                adresa: "Patrijarha Joanikija 28b",
+                mesto: "Beograd",
+                mail: "Filijala_Vidikovac@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Vojvode Stepe",
+                adresa: "Vojvode Stepe 171",
+                mesto: "Beograd",
+                mail: "Filijala_Vojvode_Stepe@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala  Zemun",
+                adresa: "Glavna 7",
+                mesto: "Zemun",
+                mail: "Filijala_Zemun@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Jurija Gagarina",
+                adresa: "Jurija Gagarina 32",
+                mesto: "Novi Beograd",
+                mail: "Filijala_Jurija_Gagarina@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Banovo Brdo",
+                adresa: "Požeška 76",
+                mesto: "Beograd",
+                mail: "Filijala_Banovo_Brdo@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Kralja Milana Beograd",
+                adresa: "Kralja Milana 11",
+                mesto: "Beograd",
+                mail: "Filijala_Kralja_Milana@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Bulevar Kralja Aleksandra",
+                adresa: "Bul.  Kralja Aleksandra 334",
+                mesto: "Beograd",
+                mail: "Filijala_Bul_KA@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala  Makedonska",
+                adresa: "Makedonska 19",
+                mesto: "Beograd",
+                mail: "Filijala_Makedonska@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Slavija",
+                adresa: "Kralja Milana 43",
+                mesto: "Beograd",
+                mail: "Filijala_Slavija@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Stari Grad",
+                adresa: "Cara Dušana 84-86",
+                mesto: "Beograd",
+                mail: "Filijala_Stari_Grad@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Lazarevac",
+                adresa: "Karađorđeva 29",
+                mesto: "Lazaravac",
+                mail: "Filijala_Lazarevac@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Obrenovac",
+                adresa: "Aleksandra Ace Simovića 2",
+                mesto: "Obrenovac",
+                mail: "Filijala_Obrenovac@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Pančevo",
+                adresa: "Karađorđeva 2b",
+                mesto: "Pančevo",
+                mail: "Filijala_Pancevo@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Pozarevac",
+                adresa: "Trg Radomira Vujovića br 12",
+                mesto: "Požarevac",
+                mail: "Filijala_Pozarevac@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Smederevo",
+                adresa: "Kralja Petra Prvog 11",
+                mesto: "Smederevo",
+                mail: "Filijala_Smederevo@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Šabac",
+                adresa: "V. Jovanovića 22",
+                mesto: "Šabac",
+                mail: "Filijala_Sabac@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Valjevo",
+                adresa: "Vojvode Mišića 22",
+                mesto: "Valjevo",
+                mail: "Filijala_Valjevo@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Niš",
+                adresa: "Nikole Pašića 42",
+                mesto: "Niš",
+                mail: "Filijala_Nis@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Pirot",
+                adresa: "Slavonska 1",
+                mesto: "Pirot",
+                mail: "Filijala_Pirot@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Bul. Dr Zorana Đinđića",
+                adresa: "Bul.  dr Zorana Đinđića 23",
+                mesto: "Niš",
+                mail: "Filijala_Bul_ZDjindjica@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Voždova",
+                adresa: "Voždova 2",
+                mesto: "Niš",
+                mail: "Filijala_Vozdova@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Zona III",
+                adresa: "Bul.  Nemanjića 25",
+                mesto: "Niš",
+                mail: "Filijala_Zona3@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Prokuplje",
+                adresa: "Topličkih junaka 1",
+                mesto: "Prokuplje",
+                mail: "Filijala_Prokuplje@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Kruševac",
+                adresa: "Vidovdanska 9-11",
+                mesto: "Kruševac",
+                mail: "Filijala_Krusevac@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Vrnjačka Banja",
+                adresa: "Kraljevačka 6, Drvara I",
+                mesto: "Vrnjačka banja",
+                mail: "Filijala_Vrnjacka_banja@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Leskovac",
+                adresa: "Bul.  Oslobođenja bb",
+                mesto: "Leskovac",
+                mail: "Filijala_Leskovac@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Vranje",
+                adresa: "Kralja Stefana Prvovenčanog 169",
+                mesto: "Vrane",
+                mail: "Filijala_Vranje@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Jagodina",
+                adresa: "Knjeginje Milice 73",
+                mesto: "Jagodina",
+                mail: "Filijala_Jagodina@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Paraćin",
+                adresa: "Kralja Petra I 30",
+                mesto: "Paraćin",
+                mail: "Filijala_Paracin@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Zaječar",
+                adresa: "Pana Đukića bb",
+                mesto: "Zaječar",
+                mail: "Filijala_Zajecar@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Bor",
+                adresa: "Đorđa Vajferta 21",
+                mesto: "Bor",
+                mail: "Filijala_Bor@aikbanka.rs"
+              },
+              {
+                naziv: "Filijal Negotin",
+                adresa: "JNA 2",
+                mesto: "Negotin",
+                mail: "Filijala_Negotin@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Kragujevac",
+                adresa: "Trg Radomira Putnika 3",
+                mesto: "Kragujevac",
+                mail: "Filijala_Kragujevac@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Čačak",
+                adresa: "Kuželjeva 2",
+                mesto: "Čačak",
+                mail: "Filijala_Cacak@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Gornji Milanovac",
+                adresa: "Kneza Aleksandra 13",
+                mesto: "Gornji Milanovac",
+                mail: "Filijala_GMilanovac@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Užice",
+                adresa: "Dimitrija Tucovića 44",
+                mesto: "Užice",
+                mail: "Filijala_Uzice@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Prijepolje",
+                adresa: "Sandžačkih brigada 19",
+                mesto: "Prijepolje",
+                mail: "Filijala_Prijepolje@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Novi Pazar",
+                adresa: "Stevana Nemanje bb",
+                mesto: "Novi Pazar",
+                mail: "Filijala_Novi_Pazar@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Kraljevo",
+                adresa: "Miloša Velikog 58",
+                mesto: "Kraljevo",
+                mail: "Filijala_Kraljevo@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Novi Sad  1",
+                adresa: "Bul.  Mihajla Pupina 2",
+                mesto: "Novi Sad",
+                mail: "Filijala_Novi_Sad@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Novi Sad 2",
+                adresa: "Bul.  Oslobođenja 68b",
+                mesto: "Novi Sad",
+                mail: "Filijala_Bul_Oslobodjenja@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Ruma",
+                adresa: "Glavna 192",
+                mesto: "Ruma",
+                mail: "Filijala_Ruma@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Inđija",
+                adresa: "Novosadska 2",
+                mesto: "Inđija",
+                mail: "Filijala_Indjija@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Subotica",
+                adresa: "Korzo 8",
+                mesto: "Subotica",
+                mail: "Filijala_Subotica@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Vrbas",
+                adresa: "Maršala Tita 80",
+                mesto: "Vrbas",
+                mail: "Filijala_Vrbas@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Zrenjanin",
+                adresa: "Žitni trg bb",
+                mesto: "Zrenjanin",
+                mail: "Filijala_Zrenjanin@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala  Kikinda",
+                adresa: "Trg Srpskih dobrovoljaca 6",
+                mesto: "Kikinda",
+                mail: "Filijala_Kikinda@aikbanka.rs"
+              },
+              {
+                naziv: "Filijala Sombor",
+                adresa: "Pariska 1",
+                mesto: "Sombor",
+                mail: "Filijala_Sombor@aikbanka.rs"
+              }
         ],
-          returnType: ['name1','name2']
         }
       },
     ]
@@ -308,10 +592,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   //Called with each value change for auto complete inputs with local autocomplete bases
   getLocalAutoCompleteOptions(newValue: string, control: FormControlModel): void {
 
-    if(!newValue || newValue.length<3) {
-      control.autoCompleteOptions = [];
-      return;
-    }
+    control.autoCompleteOptions = [];
 
     const availableOptions = control.autocompleteConfig.localAutocompletePool.filter(option => {
       return JSON.stringify(option).toLowerCase().indexOf(newValue.toLowerCase()) !== -1
@@ -332,7 +613,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     
   }
 
-  onClickAutocomplete(option: string,control: FormControlModel) {
+  onClickAutocomplete(option: string, control: FormControlModel) {
       this.dynamicForm.get(control.name)?.setValue(option);
     }
 
