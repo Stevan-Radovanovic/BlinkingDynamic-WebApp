@@ -4,6 +4,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Subscription } from 'rxjs';
 import { AppService } from '../app.service';
 import { FormControlModel } from './form-control.model';
+import { DynamicFormModel } from "./form.model";
 
 @Component({
   selector: 'app-dynamic-form',
@@ -13,6 +14,7 @@ import { FormControlModel } from './form-control.model';
 export class DynamicFormComponent implements OnInit, OnDestroy {
 
   dynamicForm!: FormGroup;
+  formJson: DynamicFormModel;
   formControlArray: FormControlModel[] = [];
   transformedControlArray: any = {};
   submittedForm: string = '';
@@ -27,8 +29,28 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
+  //Currently hardcoded
   getForm(): void {
-     this.formControlArray = [
+
+    this.formJson = {
+      title: 'Title',
+      text: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum 
+      has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a 
+      galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 
+      but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s 
+      with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software 
+      ike Aldus PageMaker including versions of Lorem Ipsum.`,
+      controls: []
+    }
+
+    this.formControlArray = this.formJson?.controls;
+
+    this.getForm2();
+   
+  }
+
+  getForm1(): void {
+    this.formControlArray = [
       {
         name: 'street',
         label:'Street',
@@ -85,7 +107,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         hasOtherField: true,
       }
     ];
+  }
 
+  getForm2(): void {
     this.formControlArray = [
       {
         label: "Status zaposlenja",

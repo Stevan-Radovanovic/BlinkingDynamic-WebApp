@@ -1,5 +1,16 @@
 
     <form [formGroup]="dynamicForm">
+
+        <!--Title-->
+        <p class="title" *ngIf="formJson?.title">
+          {{formJson.title}}
+        </p>
+
+        <!--Text-->
+        <p class="text" *ngIf="formJson?.text">
+          {{formJson.text}}
+        </p>
+
         <div *ngFor="let control of formControlArray">
 
           <!--Everything except Checkboxes-->
