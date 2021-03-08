@@ -313,10 +313,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log(control.autocompleteConfig.localAutocompletePool);
-
     const availableOptions = control.autocompleteConfig.localAutocompletePool.filter(option => {
-      console.log(JSON.stringify(option).indexOf(newValue),option,newValue)
       return JSON.stringify(option).toLowerCase().indexOf(newValue.toLowerCase()) !== -1
     });
 
