@@ -1,6 +1,9 @@
 <div class="calculator-wrapper">
 
-    <div class="sliders" *ngIf="!calculationMade">
+    <div class="sliders">
+
+        <p class="main-title">Kreditni kalkulator</p>
+
         <div class="slider">
             <p class="title">Iznos (RSD): </p>
             <div class="slider-with-limits">
@@ -20,37 +23,41 @@
             </div>
         </div>
    
-    </div>
+        <div class="checkbox-aik">
+            <mat-checkbox [checked]="isCheckboxChecked" (change)="changeLimits()">
+                Prenos plate u AIK banku?
+            </mat-checkbox>
+        </div>
+    
+        <div class="calculate-button">
+            <button mat-raised-button (click)="calculateOffer()">Izračunaj</button>
+        </div>
 
-    <div class="checkbox-aik" *ngIf="!calculationMade">
-        <mat-checkbox [checked]="isCheckboxChecked" (change)="changeLimits()">
-            Prenos plate u AIK banku?
-        </mat-checkbox>
-    </div>
-
-    <div class="calculate-button" *ngIf="!calculationMade">
-        <button mat-raised-button (click)="calculateOffer()">Izračunaj</button>
     </div>
 
     <div class="calculation-div" *ngIf="calculationMade">
+
         <button mat-fab class="repeat-button" (click)="repeatCalculation()" matTooltip="Ponovi računicu" matTooltipPosition="left">
             <i class="fas fa-redo fa-lg"></i>
         </button>
+
+        <p class="main-title">Informacije o kreditu</p>
+
         <div class="content" *ngIf="offerData.successful">
             <p class="title">Podaci</p>
             <div class="offer-data">
-                <p><b>Iznos kredita:</b> {{calculateOfferParams.amount}}000 RSD</p>
-                <p><b>Period otplate u mesecima:</b> {{calculateOfferParams.paymentPeriod}}</p>
+                <p>Iznos kredita: <b>{{calculateOfferParams.amount}}000 RSD</b></p>
+                <p>Period otplate u mesecima: <b>{{calculateOfferParams.paymentPeriod}}</b></p>
                 <p><b>{{isCheckboxChecked ? 'Sa prenosom plate u AIK banku.' : 'Bez prenosa plate u AIK banku.'}}</b></p>
             </div>
             <hr>
             <p class="title">Ponuda</p>
             <div class="offer-data">
-                <p><b>Mesečna rata:</b> {{offerData.annuity}} RSD</p>
-                <p><b>Efektivna kamatna stopa</b>: {{offerData.effectiveInterestRate}}%</p>
-                <p><b>Ukupna kamata:</b> {{offerData.totalInterest}} RSD</p>
-                <p><b>Ukupni iznos otplate:</b> {{offerData.totalRepayment}} RSD</p>
-                <p><b>Naknade i troškovi: </b>{{offerData.totalFees}} RSD</p>
+                <p>Mesečna rata: <b>{{offerData.annuity}} RSD</b></p>
+                <p>Efektivna kamatna stopa: <b>{{offerData.effectiveInterestRate}}%</b></p>
+                <p>Ukupna kamata: <b>{{offerData.totalInterest}} RSD</b></p>
+                <p>Ukupni iznos otplate: <b>{{offerData.totalRepayment}} RSD</b></p>
+                <p>Naknade i troškovi: <b>{{offerData.totalFees}} RSD</b></p>
             </div>
         </div>
         <button mat-raised-button class="accept-button" (click)="sendOfferData()" *ngIf="offerData.successful">
