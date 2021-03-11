@@ -6,13 +6,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 app-credit-calculator {
 
-    .mat-slider-track-fill, .mat-slider-thumb-label, .mat-slider-thumb {
+    .mat-slider-track-fill, .mat-slider-thumb-label, .mat-slider-thumb, .mat-slider-track-background {
         background-color:white !important;
     }
 
     .mat-slider-thumb-label {
         margin-top: 26px !important;
         transform: rotate(45deg) !important;
+        border-radius: 50% !important;
     }
     
     .mat-slider-thumb {

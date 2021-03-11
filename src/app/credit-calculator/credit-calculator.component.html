@@ -9,7 +9,7 @@
             <div class="slider-with-limits">
                 <p class="limits-min">{{creditAmountLimits.min}}k</p>
                 <mat-slider [min]="creditAmountLimits.min" [max]="creditAmountLimits.max" #slider1
-                step="1" thumbLabel tickInterval="1" [displayWith]="formatCreditLabel"></mat-slider>
+                step="1" thumbLabel tickInterval="1" [displayWith]="formatCreditLabel" [disabled]="calculationMade"></mat-slider>
                 <p class="limits-max">{{creditAmountLimits.max}}k</p>
             </div>
         </div>
@@ -18,21 +18,25 @@
             <div class="slider-with-limits">
                 <p class="limits-min">{{paymentPeriodLimits.min}}</p>
                 <mat-slider [min]="paymentPeriodLimits.min" [max]="paymentPeriodLimits.max" #slider2
-                step="1" thumbLabel tickInterval="1" [displayWith]="formatPeriodLabel"></mat-slider>
+                step="1" thumbLabel tickInterval="1" [displayWith]="formatPeriodLabel" [disabled]="calculationMade"></mat-slider>
                 <p class="limits-max">{{paymentPeriodLimits.max}}</p>
             </div>
         </div>
-   
-        <div class="checkbox-aik">
-            <mat-checkbox [checked]="isCheckboxChecked" (change)="changeLimits()">
-                Prenos plate u AIK banku?
-            </mat-checkbox>
+
+        <div class="aik-pay-transfer" *ngIf="!calculationMade">
+            <p class="aik-pay-p">Prenos plate u AIK banku?</p>
+            <button mat-button class="aik-pay-button" [ngClass]="{'active-aik-pay-button': isAikPaySelected}" (click)="changeLimits()">Da</button>
+            <button mat-button class="aik-pay-button" [ngClass]="{'active-aik-pay-button': !isAikPaySelected}" (click)="changeLimits()">Ne</button>
         </div>
     
         <div class="calculate-button">
-            <button mat-raised-button (click)="calculateOffer()">Izračunaj</button>
+            <button mat-raised-button *ngIf="!calculationMade" (click)="calculateOffer()">Izračunaj</button>
         </div>
 
+    </div>
+             
+    <div class="aik-image" *ngIf="!calculationMade">
+        <img src="../../assets/aik.jpg">
     </div>
 
     <div class="calculation-div" *ngIf="calculationMade">
@@ -48,7 +52,7 @@
             <div class="offer-data">
                 <p>Iznos kredita: <b>{{calculateOfferParams.amount}}000 RSD</b></p>
                 <p>Period otplate u mesecima: <b>{{calculateOfferParams.paymentPeriod}}</b></p>
-                <p><b>{{isCheckboxChecked ? 'Sa prenosom plate u AIK banku.' : 'Bez prenosa plate u AIK banku.'}}</b></p>
+                <p><b>{{isAikPaySelected ? 'Sa prenosom plate u AIK banku.' : 'Bez prenosa plate u AIK banku.'}}</b></p>
             </div>
             <hr>
             <p class="title">Ponuda</p>
@@ -60,9 +64,11 @@
                 <p>Naknade i troškovi: <b>{{offerData.totalFees}} RSD</b></p>
             </div>
         </div>
-        <button mat-raised-button class="accept-button" (click)="sendOfferData()" *ngIf="offerData.successful">
-            Potvrdi
-        </button>
+        <div class="accept-button-wrap">
+            <button mat-raised-button class="accept-button" (click)="sendOfferData()" *ngIf="offerData.successful">
+                Potvrdi
+            </button>
+        </div>
         <p class="error" *ngIf="!offerData.successful">{{offerData.error}}</p>
     </div>
 </div>

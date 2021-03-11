@@ -20,16 +20,40 @@
         width: 66%;
         background-color: #0a667d;
 
-        .checkbox-aik {
-            width: 75%;
+        .aik-pay-transfer {
+
             display: flex;
+            width: 100%;
+            padding-left: 222px;
             justify-content: flex-start;
+            align-items: center;
             color: white;
+
+            .aik-pay-p {
+                margin-bottom: 0px;
+                font-weight: bold;
+                margin-right: 6px;
+            }
+
+            .aik-pay-button {
+                background-color: #0a667d;
+                color: white;
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+
+            .active-aik-pay-button {
+                color: #0a667d !important;
+                background-color: white !important; 
+            }
+
         }
     
         .calculate-button {
     
-            margin-top: 40px;
+            width: 80%;
+            display: flex;
+            justify-content: flex-end;
     
             button {
                 border-radius: 25px;
@@ -37,7 +61,7 @@
                 justify-content: center;
                 background-color: white;
                 width: 140px;
-                color: black
+                color: #0a667d
             }
         }
 
@@ -91,7 +115,16 @@
 
     }
 
-
+    .aik-image {
+        width: 34%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        img {
+            width: 50%;
+        }
+    }
 
     .calculation-div {
         width: 34%;
@@ -116,12 +149,18 @@
             right: 14px;
         }
 
-        .accept-button {
-            border-radius: 25px;
-            display: flex;
-            justify-content: center;
-            background-color: #0a667d;
-            color: #fafafa;
+        .accept-button-wrap {
+
+            padding-top: 55px;
+
+            .accept-button {
+                border-radius: 25px;
+                display: flex;
+                justify-content: center;
+                background-color: #0a667d;
+                color: #fafafa;
+            }
+
         }
 
         .content {

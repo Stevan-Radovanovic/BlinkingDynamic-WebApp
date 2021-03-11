@@ -12,7 +12,7 @@ export class CreditCalculatorComponent implements OnInit {
 
   creditAmountLimits: {min: number,max: number};
   paymentPeriodLimits: {min: number,max: number};
-  isCheckboxChecked = true;
+  isAikPaySelected = true;
 
   calculateOfferParams: CalculateOfferRequestModel;
   offerData: CalculateOfferResponseModel;
@@ -40,7 +40,7 @@ export class CreditCalculatorComponent implements OnInit {
     };
   }
 
-  getLimitsWhenCheckboxIsUnchecked(): void {
+  getLimitsWhenAikPayIsNotSelected(): void {
     this.creditAmountLimits = {
       min: 400,
       max: 400
@@ -61,11 +61,11 @@ export class CreditCalculatorComponent implements OnInit {
   }
 
   changeLimits() {
-    if(this.isCheckboxChecked) {
-      this.isCheckboxChecked = false;
-      this.getLimitsWhenCheckboxIsUnchecked();
+    if(this.isAikPaySelected) {
+      this.isAikPaySelected = false;
+      this.getLimitsWhenAikPayIsNotSelected();
     } else {
-      this.isCheckboxChecked = true;
+      this.isAikPaySelected = true;
       this.getInitialLimits();
     }
  
