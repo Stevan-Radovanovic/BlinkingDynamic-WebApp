@@ -114,7 +114,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       {
         label: "Status zaposlenja",
         name: "employmentStatus",
-        required: true,
+        required: false,
         value: [],
         type: "checkbox",
         checkboxOptions: ['Zaposlen na neodređeno','Nezaposlen','Penzioner','Vlasnik radnje - preduzetnik','Zaposlen na određeno'],
@@ -924,7 +924,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     control.autoCompleteOptions = [];
 
+
     const availableOptions = control.autocompleteConfig.localAutocompletePool.filter(option => {
+      if(!option || !newValue) return false;
       return JSON.stringify(option).toLowerCase().indexOf(newValue.toLowerCase()) !== -1
     });
 
@@ -955,7 +957,46 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       data[control] = this.dynamicForm.controls[control].value;
     }
 
+    this.formJson.controls = this.formControlArray;
+
     this.submittedForm = JSON.stringify(data);
+  }
+
+  schemaValidator(schema: any, object: any) {
+
+    const objectCopy = {...object};
+
+    if (Object.keys(objectCopy).length !== schema.controls.length) return false;
+
+    schema.controls.forEach((control) => {
+      
+      if(control.name in objectCopy) return false;
+
+      switch(control.type) {
+
+        case 'checkbox': {
+
+          if(!(control.value instanceof Array)) return false;
+          if(!control.multipleChoiceCheckbox && control.value.length>1) return false;
+
+        }
+
+        case 'input':
+        case 'textarea':
+          if(!(control.value instanceof String)) return false;
+
+        case 'multiple-select':
+          if(!(control.value instanceof Array)) return false;
+
+        case 'select':
+          if(!(control.value instanceof String)) return false;
+
+      }
+
+    });
+
+    return true;
+
   }
 
   ngOnDestroy(): void {
