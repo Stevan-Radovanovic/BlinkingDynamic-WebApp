@@ -117,7 +117,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         required: true,
         value: [],
         type: "checkbox",
-        checkboxOptions: ["Da","Ne"]
+        checkboxOptions: ["Da","Ne"],
+        affectedControlNames: ["timePeriodFrom1","timePeriodTo1","officialPosition1"],
+        valueThatEnablesAffectedControls: "Da",
       },
       {
         label: "Period obavljanja (Početni datum)",
@@ -125,7 +127,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         required: false,
         value: "",
         type: "input",
-        inputType: "text"
+        inputType: "text",
+        shouldShow: false
       },
       {
         label: "Period obavljanja (Krajnji datum)",
@@ -133,7 +136,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         required: false,
         value: "",
         type: "input",
-        inputType: "text"
+        inputType: "text",        
+        shouldShow: false
       },
       {
         label: "Koju od navedenih funkcija obavljate?",
@@ -151,7 +155,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         "Lice na visokom položaju u diplomatsko - konzularnom predstavništvu (ambasador, generalni konzul, otpravnik poslova)",
         "Član organa upravljanja u javnom preduzeću ili privrednom društvu u većinskom vlasništvu države",
         "Član organa upravljanja političke stranke"
-        ]
+        ],
+        shouldShow: false
       },
       {
         label: "Da li ste funkcioner druge države?",
@@ -411,16 +416,16 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
  
       }
  
-       if(!control.multipleChoiceCheckbox) {
+      if(!control.multipleChoiceCheckbox) {
  
-         for(let i=0;i<checkboxLength;i++) {
+        for(let i=0;i<checkboxLength;i++) {
            if(i!==index) control.checkboxCheckedValues![i] = false;
-         }
+        }
 
-         if(index!==checkboxLength-1 && control.hasOtherField) {
+        if(index!==checkboxLength-1 && control.hasOtherField) {
           this.dynamicForm.get(control.name + "-internal-other")?.disable();
           this.dynamicForm.get(control.name + "-internal-other")?.reset("");
-         }
+        }
        }
 
       } 
@@ -434,6 +439,23 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       }
 
       this.dynamicForm.get(control.name)?.setValue(currentValue);
+
+      console.log(currentValue,control.valueThatEnablesAffectedControls)
+      if(currentValue.indexOf(control.valueThatEnablesAffectedControls)!==-1) {
+        
+        for (const ctl of this.formControlArray) {
+            if(control.affectedControlNames.indexOf(ctl.name)!==-1) ctl.shouldShow = true;
+        }
+
+        console.log(this.formControlArray)
+
+      } else {
+        for (const ctl of this.formControlArray) {
+          if(control.affectedControlNames.indexOf(ctl.name)!==-1) ctl.shouldShow = false;
+      }
+
+      console.log(this.formControlArray)
+      }
 
   }
 

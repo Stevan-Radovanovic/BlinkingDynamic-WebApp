@@ -29,5 +29,10 @@ export interface FormControlModel {
     hasOtherField?: boolean;
     //Not sent in JSON
     checkboxCheckedValues?: boolean[];
+
+    //Added to dynamically show/hide elements
+    shouldShow?: boolean;
+    affectedControlNames?: string[];
+    valueThatEnablesAffectedControls?: string;
 }
 
