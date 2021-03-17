@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { TextMaskModule } from 'angular2-text-mask';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -53,7 +54,8 @@ import { CreditCalculatorComponent } from './credit-calculator/credit-calculator
     MatCardModule,
     MatTooltipModule,
     MatDialogModule,
-    MatSliderModule
+    MatSliderModule,
+    TextMaskModule
   ],
   providers: [],
   entryComponents: [

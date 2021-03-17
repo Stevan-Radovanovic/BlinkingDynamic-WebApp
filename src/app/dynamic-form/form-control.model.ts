@@ -31,6 +31,7 @@ export interface FormControlModel {
     checkboxCheckedValues?: boolean[];
 
     //Added to dynamically show/hide elements
+    isDateInput?: boolean
     shouldShow?: boolean;
     affectedControlNames?: string[];
     valueThatEnablesAffectedControls?: string;

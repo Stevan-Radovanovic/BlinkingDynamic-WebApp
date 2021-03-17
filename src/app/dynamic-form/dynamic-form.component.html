@@ -21,9 +21,15 @@
               <mat-label>{{control.label}}</mat-label>
       
               <!--Regular Input-->
-              <input matInput type="{{control.inputType}}" *ngIf="control.type==='input' && !control.hasAutocomplete" 
+              <input matInput type="{{control.inputType}}" *ngIf="control.type==='input' && !control.hasAutocomplete && !control.isDateInput" 
               formControlName="{{control.name}}" value="{{control.value}}"/>
               
+
+              <!--Date Input-->
+              <input matInput type="{{control.inputType}}" *ngIf="control.type==='input' && !control.hasAutocomplete && control.isDateInput" 
+              formControlName="{{control.name}}" value="{{control.value}}" 
+              [textMask]="{mask: dateMask, showMask:true, guide: false, modelClean: true}"/>
+
               <!--AutoComplete Input-->
               <div *ngIf="control.hasAutocomplete">
                 <input matInput type="{{control.inputType}}" *ngIf="control.type==='input'" 
