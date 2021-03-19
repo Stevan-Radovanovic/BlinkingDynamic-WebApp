@@ -190,6 +190,18 @@ export class DynamicPdfSignComponent implements OnInit {
           <size>22</size>
           <smallHash>2019</smallHash>
        </document>
+       <document>
+        <base64>${this.base64}</base64>
+        <name>document3.pdf</name>
+        <size>22</size>
+        <smallHash>2019</smallHash>
+      </document>
+      <document>
+      <base64>${this.base64}</base64>
+      <name>document3.pdf</name>
+      <size>22</size>
+      <smallHash>2019</smallHash>
+    </document>
     </root>
     `
     this.transformXMLtoJSON(); 

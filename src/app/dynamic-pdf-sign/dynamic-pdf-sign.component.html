@@ -1,7 +1,10 @@
 <div class="wrap">
-    <div *ngFor="let miniPdf of miniPdfComponents">
-        <app-mini-pdf-view [miniPdf]="miniPdf"></app-mini-pdf-view>
+    <div class="pdf-wrap">
+        <div *ngFor="let miniPdf of miniPdfComponents">
+            <app-mini-pdf-view [miniPdf]="miniPdf"></app-mini-pdf-view>
+        </div>
     </div>
+
     <button mat-raised-button class="sign-button" (click)="openSignPdfModal()">
         Sign the documents
     </button>

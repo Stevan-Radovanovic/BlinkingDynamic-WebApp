@@ -1,19 +1,22 @@
 <mat-card class="pdf-card">
     <div class="left-side">
-        <img src="../../../assets/pdf-icon.png" class="pdf-logo"/>
+        <img src="../../../assets/pdf-gray.png" class="pdf-logo"/>
 
-        <div class="paragraph-div">
-            <p class="paragraph-1">Document name:</p>
-            <p class="paragraph-2"> {{miniPdf.name}}</p>
+        <div class="paragraph-wrap">
+            <div class="paragraph-div">
+                <p class="paragraph-1">Document name:</p>
+                <p class="paragraph-2"> {{miniPdf.name}}</p>
+            </div>
+            <div class="paragraph-div">
+                <p class="paragraph-1">Document size: </p>
+                <p class="paragraph-2"> {{miniPdf.size}} MB</p>
+            </div>
+            <div class="paragraph-div">
+                <p class="paragraph-1">Document small hash: </p>
+                <p class="paragraph-2"> {{miniPdf.smallHash}}</p>
+            </div>
         </div>
-        <div class="paragraph-div">
-            <p class="paragraph-1">Document size: </p>
-            <p class="paragraph-2"> {{miniPdf.size}} MB</p>
-        </div>
-        <div class="paragraph-div">
-            <p class="paragraph-1">Document small hash: </p>
-            <p class="paragraph-2"> {{miniPdf.smallHash}}</p>
-        </div>
+
 
     </div>
     <div class="right-side">
@@ -21,14 +24,14 @@
         (click)="openPreview()"
         matTooltip="Preview"
         matTooltipPosition="left">
-            <i class="fas fa-eye"></i>
+            <i class="fas fa-eye fa-2x"></i>
         </button>
-        <a mat-fab class="action-button"
+        <a mat-fab class="action-button-2"
         (click)="downloadPdf()"
         #downloadLink
         matTooltip="Download"
-        matTooltipPosition="left">
-            <i class="fas fa-download"></i>
+        matTooltipPosition="right">
+            <i class="fas fa-download fa-2x"></i>
         </a>
     </div>
 </mat-card>

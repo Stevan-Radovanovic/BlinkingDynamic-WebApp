@@ -2,44 +2,69 @@
     margin: 8px;
     padding: 32px;
     display: flex;
+    flex: 33%;
+    flex-direction: column;
     justify-content: space-between;
+    border-radius: 0;
+
 
     .left-side {
 
+        display: flex;
+        justify-content: space-evenly;
+
         .pdf-logo {
-            width: 40%;
+            width: 30%;
             margin-bottom: 11px;
         }
 
-        .paragraph-div {
-            display: flex;
+        .paragraph-wrap {
 
-            .paragraph-1 {
-                font-size: medium;
-                margin-left: 8px;
-                margin-right: 4px;
-                font-weight: bold;
-            }
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+            .paragraph-div {
+                display: flex;
     
-            .paragraph-2 {
-                font-size: medium;
-            }    
+                .paragraph-1 {
+                    font-size: medium;
+                    margin-left: 8px;
+                    margin-right: 4px;
+                }
+        
+                .paragraph-2 {
+                    font-size: medium;
+                    font-weight: bold;
+                }    
+    
+            }
 
         }
-
 
     }
 
     .right-side {
         display: flex;
-        flex-direction: column;
+        margin-top: 20px;
+        justify-content: space-evenly;
 
         .action-button {
             margin: 2px;
-            background-color: #ff3f60;
+            background-color: #0a667d;
 
             i {
                 color: white;
+            }
+        }
+
+        .action-button-2 {
+            margin: 2px;
+            background-color: white;
+
+            i {
+                color: #0a667d;
             }
         }
     }
