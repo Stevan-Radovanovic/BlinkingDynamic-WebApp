@@ -78,7 +78,7 @@
 
               <mat-checkbox *ngIf="control.hasOtherField" (change)="setCheckboxValue($event,control,control.checkboxCheckedValues!.length-1)"
               [checked]="control.checkboxCheckedValues![control.checkboxCheckedValues!.length-1]">
-                {{control.otherFieldLabel}} 
+                {{control.otherFieldLabel ? control.otherFieldLabel : "Ostalo: "}} 
                 <input formControlName="{{control.name + '-internal-other'}}" type="text"/>
               </mat-checkbox>
           
