@@ -15,6 +15,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCardModule} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSliderModule} from '@angular/material/slider';
+import {MatIconModule} from '@angular/material/icon'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
@@ -55,6 +56,7 @@ import { CreditCalculatorComponent } from './credit-calculator/credit-calculator
     MatTooltipModule,
     MatDialogModule,
     MatSliderModule,
+    MatIconModule,
     TextMaskModule
   ],
   providers: [],

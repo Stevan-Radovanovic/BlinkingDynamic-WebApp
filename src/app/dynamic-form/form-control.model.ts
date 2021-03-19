@@ -27,6 +27,7 @@ export interface FormControlModel {
     multipleChoiceCheckbox?: boolean;
     checkboxOptions?: string[];
     hasOtherField?: boolean;
+    otherFieldLabel?: string;
     //Not sent in JSON
     checkboxCheckedValues?: boolean[];
 

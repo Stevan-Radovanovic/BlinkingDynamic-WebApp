@@ -2,6 +2,7 @@
 <div class="wrap">
     <p class="title">{{pageData.title}}</p>
     <div #contentDiv></div>
+    <hr style="background-color: 0a667d;">
     <div class="buttons-wrap">
         <div *ngFor="let button of pageData.actions">
             <button [ngClass]="{'download-button': button.type==='download', 

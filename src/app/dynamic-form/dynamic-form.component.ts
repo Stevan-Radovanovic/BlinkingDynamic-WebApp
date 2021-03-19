@@ -132,6 +132,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
               if(control.affectedControlNames.indexOf(ctl.name)!==-1) {
                 ctl.shouldShow = false;
                 this.dynamicForm.get(ctl.name).clearValidators();
+                if(ctl.type === 'checkbox') ctl.checkboxCheckedValues = ctl.checkboxCheckedValues?.map(() => false);
                 this.dynamicForm.get(ctl.name).reset(this.getStartingFieldValue(ctl));
               }
           }
@@ -356,7 +357,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         required: true,
         checkboxOptions: ["Option1","Option2","Option3","Option4","Option5"],
         multipleChoiceCheckbox: false,
-        hasOtherField: true,
+        hasOtherField: true
       }
     ];
   }
@@ -658,6 +659,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         "Bračni ili vanbračni partner, usvojenog deteta, ili pastorčeta", 
         "Ostvarujem zajedničku dobit iz imovine ili uspostavljenog poslovnog odnosa", "Imam bilo koje druge bliske poslovne odnose"],
         hasOtherField: true,
+        otherFieldLabel: "Drugo: ",
         shouldShow: false
       },
   ];
