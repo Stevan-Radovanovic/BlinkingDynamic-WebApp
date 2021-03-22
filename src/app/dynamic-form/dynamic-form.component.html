@@ -44,7 +44,6 @@
 
               <!--Select-->
               <mat-select *ngIf="control.type.indexOf('select')!==-1" formControlName="{{control.name}}" 
-              [disabled]="control.readOnly ? control.readOnly : false"
               multiple="{{control.type==='multiple-select' ? true : false}}">
                 <mat-option *ngFor="let option of control.selectOptions" [value]="option">
                   {{option}}
