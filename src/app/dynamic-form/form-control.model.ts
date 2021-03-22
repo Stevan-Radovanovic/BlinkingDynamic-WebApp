@@ -36,5 +36,8 @@ export interface FormControlModel {
     shouldShow?: boolean;
     affectedControlNames?: string[];
     valueThatEnablesAffectedControls?: string;
+
+    //Added for read-only forms
+    readOnly?: boolean;
 }
 

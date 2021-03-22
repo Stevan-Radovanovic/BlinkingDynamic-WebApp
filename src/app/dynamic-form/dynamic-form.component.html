@@ -32,7 +32,7 @@
 
               <!--AutoComplete Input-->
               <div *ngIf="control.hasAutocomplete">
-                <input matInput type="{{control.inputType}}" *ngIf="control.type==='input'" 
+                <input matInput type="{{control.inputType}}" *ngIf="control.type==='input'"
                 (ngModelChange)="autocompleteBranch($event,control)"
                 formControlName="{{control.name}}" value="{{control.value}}" [matAutocomplete]="auto"/>
                 <mat-autocomplete #auto="matAutocomplete">
@@ -44,6 +44,7 @@
 
               <!--Select-->
               <mat-select *ngIf="control.type.indexOf('select')!==-1" formControlName="{{control.name}}" 
+              [disabled]="control.readOnly ? control.readOnly : false"
               multiple="{{control.type==='multiple-select' ? true : false}}">
                 <mat-option *ngFor="let option of control.selectOptions" [value]="option">
                   {{option}}

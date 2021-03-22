@@ -55,7 +55,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
           control.checkboxCheckedValues?.push(false);
       }
 
-      this.transformedControlArray[control.name] = new FormControl(control.value,control.required?Validators.required:[])
+      this.transformedControlArray[control.name] = new FormControl(control.value,control.required?Validators.required:[]);
+
+      if(control.readOnly) this.transformedControlArray[control.name].disable(); 
+
     });
   }
 
@@ -271,6 +274,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
   }
 
+  getStartingFieldValue(ctl: FormControlModel) {
+
+    if(ctl.type === 'checkbox' || ctl.type === 'multiple-select') return [];
+    return "";
+
+  }
+
   ngOnDestroy(): void {
     this.autoCompleteSubscription?.unsubscribe();
   }
@@ -295,13 +305,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
    
   }
 
-  getStartingFieldValue(ctl: FormControlModel) {
-
-    if(ctl.type === 'checkbox' || ctl.type === 'multiple-select') return [];
-    return "";
-
-  }
-
   getForm1(): void {
     this.formControlArray = [
       {
@@ -312,6 +315,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         required: true,
         inputType: "text",
         hasAutocomplete: true,
+        readOnly: true,
         autocompleteConfig: {
           url: "https://onboarding-api-local-dev.blinking.services/getStreets/?key=",
           returnType: ["name","cityName","regionName","placeName"]
@@ -323,6 +327,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         value:"Radovanovic",
         type:"input",
         required: true,
+        readOnly: true,
         inputType: "text"
       },
       {
@@ -331,6 +336,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         value: "Male",
         type:"select",
         required: true,
+        readOnly: true,
         selectOptions: ["Male","Female","Neutral"]
       },
       {
@@ -339,6 +345,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         value: ["Gaming","Mountaineering"],
         type:"multiple-select",
         required: true,
+        readOnly: true,
         selectOptions: ["Cooking","Fishing","Gaming","Mountaineering","Running"]
       },
       {
@@ -347,6 +354,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         value: "Commenttttttt",
         type:"textarea",
         required: true,
+        readOnly: true,
         rows: 4
       },
       {
