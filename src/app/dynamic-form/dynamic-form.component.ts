@@ -48,7 +48,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
       if(control.type==="checkbox") {
         control.checkboxCheckedValues = [];
-        control.checkboxOptions?.forEach(() => {control.checkboxCheckedValues?.push(false)});
+        control.checkboxOptions?.forEach((checkboxOption) => {
+          const result = (control.value as Array<string>).indexOf(checkboxOption) !== -1
+          control.checkboxCheckedValues?.push(result);
+        });
       }
         if(control.hasOtherField) {
           this.transformedControlArray[control.name + "-internal-other"] = new FormControl({value: "",disabled: true});
@@ -125,7 +128,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
           for (const ctl of this.formControlArray) {
               if(control.affectedControlNames.indexOf(ctl.name)!==-1) {
                 ctl.shouldShow = true;
+                ctl.required = true;
                 this.dynamicForm.get(ctl.name).setValidators(Validators.required);
+                this.dynamicForm.get(ctl.name).updateValueAndValidity();
               }
           }
     
@@ -137,6 +142,23 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 this.dynamicForm.get(ctl.name).clearValidators();
                 if(ctl.type === 'checkbox') ctl.checkboxCheckedValues = ctl.checkboxCheckedValues?.map(() => false);
                 this.dynamicForm.get(ctl.name).reset(this.getStartingFieldValue(ctl));
+
+                if( ctl.affectedControlNames !== undefined) {
+                  
+                  for (const innerCtl of this.formControlArray) {
+
+                    if(ctl.affectedControlNames.indexOf(innerCtl.name)!==-1) {
+
+                      innerCtl.shouldShow = false;
+                      this.dynamicForm.get(innerCtl.name).clearValidators();
+                      if(innerCtl.type === 'checkbox') innerCtl.checkboxCheckedValues = innerCtl.checkboxCheckedValues?.map(() => false);
+                      this.dynamicForm.get(innerCtl.name).reset(this.getStartingFieldValue(innerCtl));
+                      
+                    }
+                   
+                  }
+
+                }
               }
           }
 
@@ -145,6 +167,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       }
 
       this.dynamicForm.updateValueAndValidity();
+      console.log(this.dynamicForm.controls)
 
   }
 
@@ -289,13 +312,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
    getForm(): void {
 
     this.formJson = {
-      title: "Title",
-      text: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum 
-      has been the industry"s standard dummy text ever since the 1500s, when an unknown printer took a 
-      galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 
-      but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s 
-      with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software 
-      ike Aldus PageMaker including versions of Lorem Ipsum.`,
+      title: "Direktni marketing",
+      text: `Dajem saglasnost da AIK BANKA moje podatke o ličnosti prikupljene u ovom postupku i u skladu sa važećim propisima RS 
+      dalje obrađuje u svrhu reklamiranja proizvoda AIK Banke obaveštavanjem na brojeve telefona navedene u ovom zahtevu, 
+      adresu stanovanja  i adresu  elektronske pošte`,
       controls: []
     }
 
@@ -373,6 +393,16 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   getPepForm(): void {
     this.formControlArray = [
       {
+        label: "Da li ste politički eksponirani (obavljate određene javne funkcije) u prethodne 4 godine?",
+        name: "mainQuestion",
+        required: true,
+        value: [],
+        type: "checkbox",
+        checkboxOptions: ["Da","Ne"],
+        affectedControlNames: ["officialQuestion1","officialQuestion2","officialQuestion3","officialQuestion4","officialQuestion5","officialQuestion6"],
+        valueThatEnablesAffectedControls: "Da",
+      },
+      {
         label: "Da li ste funkcioner Republike Srbije?",
         name: "officialQuestion1",
         required: true,
@@ -381,6 +411,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         checkboxOptions: ["Da","Ne"],
         affectedControlNames: ["timePeriodFrom1","timePeriodTo1","officialPosition1"],
         valueThatEnablesAffectedControls: "Da",
+        shouldShow: false
       },
       {
         label: "Period obavljanja (Početni datum)",
@@ -430,6 +461,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         checkboxOptions: ["Da","Ne"],
         affectedControlNames: ["timePeriodFrom2","timePeriodTo2","officialPosition2"],
         valueThatEnablesAffectedControls: "Da",
+        shouldShow: false
       },
       {
         label: "Period obavljanja (Početni datum)",
@@ -478,6 +510,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         checkboxOptions: ["Da","Ne"],
         affectedControlNames: ["timePeriodFrom3","timePeriodTo3","officialPosition3"],
         valueThatEnablesAffectedControls: "Da",
+        shouldShow: false
       },
       {
         label: "Period obavljanja (Početni datum)",
@@ -522,6 +555,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         checkboxOptions: ["Da","Ne"],
         affectedControlNames: ["timePeriodFrom4","timePeriodTo4","officialPosition4","officialFullName4"],
         valueThatEnablesAffectedControls: "Da",
+        shouldShow: false
       },
       {
         label: "Ime i prezime funkcionera",
@@ -570,6 +604,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         checkboxOptions: ["Da","Ne"],
         affectedControlNames: ["timePeriodFrom5","timePeriodTo5","officialPosition5","officialFullName5"],
         valueThatEnablesAffectedControls: "Da",
+        shouldShow: false
       },
       {
         label: "Ime i prezime funkcionera",
@@ -618,6 +653,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         checkboxOptions: ["Da","Ne"],
         affectedControlNames: ["timePeriodFrom6","timePeriodTo6","officialPosition6","officialFullName6","familyRelation"],
         valueThatEnablesAffectedControls: "Da",
+        shouldShow: false
       },
       {
         label: "Ime i prezime funkcionera",
@@ -671,5 +707,20 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         shouldShow: false
       },
   ];
+  }
+
+  getForm3() {
+
+    this.formControlArray = [
+      {
+        name: "checkbox",
+        label:"",
+        value:["Saglasan sam"],
+        type:"checkbox",
+        required: true,
+        checkboxOptions: ["Saglasan sam", "Nisam saglasan"],
+        multipleChoiceCheckbox: false
+      },
+    ];
   }
 }
