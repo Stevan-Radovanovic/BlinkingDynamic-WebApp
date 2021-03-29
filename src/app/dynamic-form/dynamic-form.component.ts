@@ -21,6 +21,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   submittedForm: string = "";
   autoCompleteSubscription!: Subscription;
 
+  // Date mask
   dateMask = function(rawValue: string) {
     let days = [/[0-3]/, /\d/,'/'];
     let months = [/[0-1]/, /[1-9]/,'/'];
@@ -42,7 +43,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  //Transform each object form initial JSON objects array into a form control
+  // Transform each object form initial JSON objects array into a form control
   transformToControls(): void {
     this.formControlArray.forEach((control) => {
 
@@ -58,7 +59,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
           control.checkboxCheckedValues?.push(false);
       }
 
-      this.transformedControlArray[control.name] = new FormControl(control.value,control.required?Validators.required:[]);
+      this.transformedControlArray[control.name] = new FormControl(control.value,control.required ? Validators.required: []);
 
       if(control.readOnly) this.transformedControlArray[control.name].disable(); 
 
@@ -69,12 +70,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     this.dynamicForm = new FormGroup(this.transformedControlArray);
   }
 
-  //Called with each checbox (un)checking, changes the overall value of the checkboxes form control
+  // Called with each checkbox (un)checking, changes the overall value of the checkboxes form control
   setCheckboxValue(event: any, control: FormControlModel, index: number): void {
 
     const checkboxLength = control.checkboxCheckedValues!.length;
     const currentValue: string[] =[];
 
+    // Actions exclusive to checkbox change events
     if(event instanceof MatCheckboxChange) {
  
       if(!control.checkboxCheckedValues![index]) {
@@ -108,10 +110,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
       } 
 
+      // Adds the currently checked checkboxes to the hidden select field that acts as a form control
       for(let i=0;i<control.checkboxOptions!.length;i++) {
         if(control.checkboxCheckedValues![i]===true) currentValue.push(control.checkboxOptions![i])
       }
 
+      // Adds the current value of the internal other field to the hidden select field that acts as a form control
       if(control.hasOtherField && control.checkboxCheckedValues![checkboxLength-1]) {
         currentValue.push(this.dynamicForm.get(control.name + "-internal-other")?.value);
       }
@@ -121,23 +125,29 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         this.dynamicForm.get(control.name)?.reset();
       }
 
+      // Only for form controls that affect the visiblity of other form controls
       if(control.valueThatEnablesAffectedControls !== undefined) {
 
         if(currentValue.indexOf(control.valueThatEnablesAffectedControls)!==-1) {
         
           for (const ctl of this.formControlArray) {
+
               if(control.affectedControlNames.indexOf(ctl.name)!==-1) {
+
                 ctl.shouldShow = true;
                 ctl.required = true;
                 this.dynamicForm.get(ctl.name).setValidators(Validators.required);
                 this.dynamicForm.get(ctl.name).updateValueAndValidity();
+
               }
           }
     
         } else {
 
           for (const ctl of this.formControlArray) {
+
               if(control.affectedControlNames.indexOf(ctl.name)!==-1) {
+
                 ctl.shouldShow = false;
                 this.dynamicForm.get(ctl.name).clearValidators();
                 if(ctl.type === 'checkbox') ctl.checkboxCheckedValues = ctl.checkboxCheckedValues?.map(() => false);
@@ -153,7 +163,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                       this.dynamicForm.get(innerCtl.name).clearValidators();
                       if(innerCtl.type === 'checkbox') innerCtl.checkboxCheckedValues = innerCtl.checkboxCheckedValues?.map(() => false);
                       this.dynamicForm.get(innerCtl.name).reset(this.getStartingFieldValue(innerCtl));
-                      
+
                     }
                    
                   }
@@ -171,19 +181,22 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
   }
 
+  // A method to determine the type of autocomplete
   autocompleteBranch(newValue: string, control: FormControlModel) {
     control.autocompleteLocal ? this.getLocalAutoCompleteOptions(newValue, control) : this.getAutoCompleteOptions(newValue, control)
   }
 
 
-  //Called with each value change for auto complete inputs
+  // Called with each value change for auto complete inputs
   getAutoCompleteOptions(newValue: string, control: FormControlModel): void {
 
+    // Disables auto complete if the input field character count is below 3
     if(!newValue || newValue.length<3) {
       control.autoCompleteOptions = [];
       return;
     } 
 
+    // If the input field length is above 3, sets all the necessary auto complete options
     this.autoCompleteSubscription = this.serv.getAutocompleteSource(control.autocompleteConfig!.url,newValue).subscribe((response: any) => {
 
       if(control.autocompleteConfig?.returnType==="string") {
@@ -205,7 +218,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     
   }
 
-  //Called with each value change for auto complete inputs with local autocomplete bases
+  // Called with each value change for auto complete inputs with local autocomplete bases
   getLocalAutoCompleteOptions(newValue: string, control: FormControlModel): void {
 
     control.autoCompleteOptions = [];
@@ -235,9 +248,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       this.dynamicForm.get(control.name)?.setValue(option);
     }
 
+  // Submits the form, if it's valid
   submit(): void {
+
+    if(!this.dynamicForm.valid) return;
+
     const data: any = {}
 
+    // Excludes the value of hidden internal form controls
     for (const control in this.dynamicForm.controls) {
       if(control.endsWith("-internal-other")) continue;
       data[control] = this.dynamicForm.controls[control].value;
@@ -308,7 +326,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     this.autoCompleteSubscription?.unsubscribe();
   }
 
-   //Currently hardcoded
+/*#############################################
+The methods below are for testing purposes only
+#############################################*/
+
    getForm(): void {
 
     this.formJson = {

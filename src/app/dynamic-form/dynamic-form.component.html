@@ -76,6 +76,7 @@
                 <mat-checkbox (change)="setCheckboxValue($event,control,i)" [checked]="control.checkboxCheckedValues![i]">{{option}}</mat-checkbox>
               </div>
 
+              <!--Input field inside a checkbox group-->
               <mat-checkbox *ngIf="control.hasOtherField" (change)="setCheckboxValue($event,control,control.checkboxCheckedValues!.length-1)"
               [checked]="control.checkboxCheckedValues![control.checkboxCheckedValues!.length-1]">
                 {{control.otherFieldLabel ? control.otherFieldLabel : "Ostalo: "}} 
