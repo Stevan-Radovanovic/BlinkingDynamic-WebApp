@@ -28,13 +28,20 @@ form {
 }
 
 .title {
-    font-weight: bold;
     font-size: x-large;
-    text-align: center
+    text-align: center;
+    color: #181616
 }
 
 .text {
-    text-align: justify;
+    text-align: center;
     font-size: medium;
+    color: #181616
+}
+
+mat-form-field {
+    label {
+        color: #181616
+    }
 }
 

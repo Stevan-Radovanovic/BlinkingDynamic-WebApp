@@ -28,7 +28,7 @@
               <!--Date Input-->
               <input matInput type="{{control.inputType}}" *ngIf="control.type==='input' && !control.hasAutocomplete && control.isDateInput" 
               formControlName="{{control.name}}" value="{{control.value}}" 
-              [textMask]="{mask: dateMask, showMask:true, guide: false, modelClean: true}"/>
+              [textMask]="{mask: dateMask, showMask:true, guide: true, modelClean: true}"/>
 
               <!--AutoComplete Input-->
               <div *ngIf="control.hasAutocomplete">

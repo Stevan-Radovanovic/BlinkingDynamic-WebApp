@@ -35,7 +35,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   }
 
   constructor(private serv: AppService) {
-    this.getForm();
+    this.getForm1();
     this.transformToControls();
     this.initializeForm();
   }
@@ -333,16 +333,14 @@ The methods below are for testing purposes only
    getForm(): void {
 
     this.formJson = {
-      title: "Direktni marketing",
-      text: `Dajem saglasnost da AIK BANKA moje podatke o ličnosti prikupljene u ovom postupku i u skladu sa važećim propisima RS 
-      dalje obrađuje u svrhu reklamiranja proizvoda AIK Banke obaveštavanjem na brojeve telefona navedene u ovom zahtevu, 
-      adresu stanovanja  i adresu  elektronske pošte`,
+      title: "Obaveze za refinansiranje",
+      text: `Molimo Vas da unesete dugovanja za navedene obaveze`,
       controls: []
     }
 
     this.formControlArray = this.formJson?.controls;
 
-    this.getPepForm();
+    this.getRefinanceForm();
    
   }
 
@@ -368,7 +366,7 @@ The methods below are for testing purposes only
         value:"Radovanovic",
         type:"input",
         required: true,
-        readOnly: true,
+        isDateInput: true,
         inputType: "text"
       },
       {
@@ -743,5 +741,36 @@ The methods below are for testing purposes only
         multipleChoiceCheckbox: false
       },
     ];
+  }
+
+  getRefinanceForm() {
+
+    this.formControlArray = [
+      {
+        name: "creditCard",
+        label:"Kreditna kartica",
+        value: "",
+        type:"input",
+        inputType: "text",
+        required: true,
+      },
+      {
+        name: "cashCredit",
+        label:"Gotovinski kredit",
+        value: "",
+        type:"input",
+        inputType: "text",
+        required: true,
+      },
+      {
+        name: "housingCredit",
+        label:"Stambeni kredit",
+        value: "",
+        type:"input",
+        inputType: "text",
+        required: true,
+      },
+    ];
+
   }
 }
