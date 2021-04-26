@@ -36,9 +36,19 @@
                 (ngModelChange)="autocompleteBranch($event,control)" placeholder="{{control.placeholder}}"
                 formControlName="{{control.name}}" value="{{control.value}}" [matAutocomplete]="auto"/>
                 <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let option of control.autoCompleteOptions" (click)="onClickAutocomplete(option,control)">
+
+                  <div *ngIf="!control.autocompleteLocal">
+                    <mat-option *ngFor="let option of (control.autoCompleteOptions | async)" (click)="onClickAutocomplete(option,control)">
                       {{option}}
                   </mat-option>
+                  </div>
+
+                  <div *ngIf="control.autocompleteLocal">
+                    <mat-option *ngFor="let option of control.autoCompleteOptions" (click)="onClickAutocomplete(option,control)">
+                      {{option}}
+                  </mat-option>
+                  </div>
+
                 </mat-autocomplete>
               </div>
 

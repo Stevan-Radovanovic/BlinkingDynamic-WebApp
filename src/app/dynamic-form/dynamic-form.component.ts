@@ -2,7 +2,8 @@ import { createLoweredSymbol } from "@angular/compiler";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatCheckboxChange } from "@angular/material/checkbox";
-import { Subscription } from "rxjs";
+import { EMPTY, empty, Observable, of, Subscription } from "rxjs";
+import { catchError, distinctUntilChanged, filter, startWith, switchMap, tap } from "rxjs/operators"
 import { AppService } from "../app.service";
 import { FormControlModel } from "./form-control.model";
 import { DynamicFormModel } from "./form.model";
@@ -19,7 +20,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   formControlArray: FormControlModel[] = [];
   transformedControlArray: any = {};
   submittedForm: string = "";
-  autoCompleteSubscription!: Subscription;
+  autoCompleteSubscription!: Observable<any[]>;
 
   // Date mask
   dateMask = function(rawValue: string) {
@@ -38,6 +39,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     this.getForm1();
     this.transformToControls();
     this.initializeForm();
+    this.registerValueChangeSubscription();
   }
 
   ngOnInit(): void {
@@ -192,35 +194,80 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     control.autocompleteLocal ? this.getLocalAutoCompleteOptions(newValue, control) : this.getAutoCompleteOptions(newValue, control);
   }
 
+  registerValueChangeSubscription() {
+
+    this.formControlArray.forEach(control => {
+
+      if(control.hasAutocomplete && !control.autocompleteLocal) {
+
+        control.autoCompleteOptions = this.dynamicForm.get(control.name).valueChanges.pipe(
+          distinctUntilChanged(),
+          filter(value => value && value.length >= 3),
+          switchMap((value: string) => this.serv.getAutocompleteSource(control.autocompleteConfig.url, value).pipe(
+            catchError(_ => {
+              return EMPTY;
+            }),
+          )),
+          tap(payload => {
+            console.log(payload);
+            if(control.autocompleteConfig?.returnType==="string") {
+              console.log('here');
+              return payload;
+            }
+    
+            const tempArray = [];
+    
+            payload.forEach((value: any) => {
+              let option = "";
+              (control.autocompleteConfig?.returnType as any[]).forEach((param) => {
+                option = option.concat(value[param]+", ");
+              })
+              tempArray.push(option.slice(0,option.length-2));
+            })
+    
+            return of(tempArray);
+    
+          })
+        )
+      }
+
+
+
+    })
+
+
+  }
 
   // Called with each value change for auto complete inputs
   getAutoCompleteOptions(newValue: string, control: FormControlModel): void {
 
     // Disables auto complete if the input field character count is below 3
-    if(!newValue || newValue.length<3) {
-      control.autoCompleteOptions = [];
-      return;
-    } 
+    // if(!newValue || newValue.length<3) {
+    //   control.autoCompleteOptions = of([]);
+    //   return;
+    // } 
 
     // If the input field length is above 3, sets all the necessary auto complete options
-    this.autoCompleteSubscription = this.serv.getAutocompleteSource(control.autocompleteConfig!.url,newValue).subscribe((response: any) => {
 
-      if(control.autocompleteConfig?.returnType==="string") {
-        control.autoCompleteOptions = response.payload;
-        return;
-      }
 
-      control.autoCompleteOptions = [];
+    // this.autoCompleteSubscription = this.serv.getAutocompleteSource(control.autocompleteConfig!.url,newValue).subscribe((response: any) => {
 
-      response.payload.forEach((value: any) => {
-        let option = "";
-        (control.autocompleteConfig?.returnType as any[]).forEach((param) => {
-          option = option.concat(value[param]+", ");
-        })
-        control.autoCompleteOptions!.push(option.slice(0,option.length-2));
-      })
+    //   if(control.autocompleteConfig?.returnType==="string") {
+    //     control.autoCompleteOptions = response.payload;
+    //     return;
+    //   }
+
+    //   control.autoCompleteOptions = [];
+
+    //   response.payload.forEach((value: any) => {
+    //     let option = "";
+    //     (control.autocompleteConfig?.returnType as any[]).forEach((param) => {
+    //       option = option.concat(value[param]+", ");
+    //     })
+    //     control.autoCompleteOptions!.push(option.slice(0,option.length-2));
+    //   })
       
-    });
+    // });
     
   }
 
@@ -228,7 +275,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   getLocalAutoCompleteOptions(newValue: string, control: FormControlModel): void {
 
     control.autoCompleteOptions = [];
-
 
     const availableOptions = control.autocompleteConfig.localAutocompletePool.filter(value => {
       if(!value || !newValue) return false;
@@ -335,7 +381,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.autoCompleteSubscription?.unsubscribe();
   }
 
   autocompleteValidator() {
@@ -436,7 +481,7 @@ The methods below are for testing purposes only
         placeholder: "alooo",
         autocompleteHintMessage: "Molimo vas breeeeeeeeeee",
         "autocompleteConfig": {
-          "returnType": ["naziv","adresa","mesto"],
+          "returnType": ["naziv"],
           "localAutocompletePool": [
             {
               "naziv": "Filijala Beograd-Grawe",

@@ -1,3 +1,5 @@
+import { Observable } from "rxjs";
+
 export interface FormControlModel {
     name: string,
     value: any;
@@ -22,7 +24,7 @@ export interface FormControlModel {
     };
     autocompleteHintMessage?: string;
     //Not sent in JSON
-    autoCompleteOptions?: any[];
+    autoCompleteOptions?: any;
     placeholder?: string;
 
     //Checkboxes only
