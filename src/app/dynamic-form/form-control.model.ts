@@ -20,8 +20,10 @@ export interface FormControlModel {
         returnType: 'string' | any[];
         localAutocompletePool?: any[];
     };
+    autocompleteHintMessage?: string;
     //Not sent in JSON
     autoCompleteOptions?: any[];
+    placeholder?: string;
 
     //Checkboxes only
     multipleChoiceCheckbox?: boolean;

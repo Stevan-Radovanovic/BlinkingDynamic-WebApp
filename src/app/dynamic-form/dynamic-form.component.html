@@ -22,18 +22,18 @@
       
               <!--Regular Input-->
               <input matInput type="{{control.inputType}}" *ngIf="control.type==='input' && !control.hasAutocomplete && !control.isDateInput" 
-              formControlName="{{control.name}}" value="{{control.value}}"/>
+              formControlName="{{control.name}}" value="{{control.value}}" placeholder="{{control.placeholder}}"/>
               
 
               <!--Date Input-->
               <input matInput type="{{control.inputType}}" *ngIf="control.type==='input' && !control.hasAutocomplete && control.isDateInput" 
-              formControlName="{{control.name}}" value="{{control.value}}" 
-              [textMask]="{mask: dateMask, showMask:true, guide: true, modelClean: true}"/>
+              formControlName="{{control.name}}" value="{{control.value}}"placeholder="{{control.placeholder}}"
+              [textMask]="{mask: dateMask, showMask:false, guide: true, modelClean: true}"/>
 
               <!--AutoComplete Input-->
               <div *ngIf="control.hasAutocomplete">
                 <input matInput type="{{control.inputType}}" *ngIf="control.type==='input'"
-                (ngModelChange)="autocompleteBranch($event,control)"
+                (ngModelChange)="autocompleteBranch($event,control)" placeholder="{{control.placeholder}}"
                 formControlName="{{control.name}}" value="{{control.value}}" [matAutocomplete]="auto"/>
                 <mat-autocomplete #auto="matAutocomplete">
                   <mat-option *ngFor="let option of control.autoCompleteOptions" (click)="onClickAutocomplete(option,control)">
@@ -52,9 +52,11 @@
       
               <!--Text Area-->
               <textarea matInput *ngIf="control.type==='textarea'" [rows]="control.rows"  
-              formControlName="{{control.name}}" value="{{control.value}}">
+              formControlName="{{control.name}}" value="{{control.value}}" placeholder="{{control.placeholder}}">
               </textarea>
       
+            <mat-error *ngIf="control.hasAutocomplete">{{control.autocompleteHintMessage}}</mat-error>
+
             </mat-form-field>
 
             <!--Checkboxes-->

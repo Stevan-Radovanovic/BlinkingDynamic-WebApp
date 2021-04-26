@@ -84,6 +84,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
  
         if(control.hasOtherField && index===checkboxLength-1) {
          this.dynamicForm.get(control.name + "-internal-other")?.enable();
+         this.dynamicForm.get(control.name + "-internal-other")?.setValidators([Validators.required]);
+         this.dynamicForm.get(control.name + "-internal-other")?.updateValueAndValidity();
        }
  
       } else {
@@ -91,6 +93,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
  
        if(index===checkboxLength-1 && control.hasOtherField) {
          this.dynamicForm.get(control.name + "-internal-other")?.disable();
+         this.dynamicForm.get(control.name + "-internal-other")?.clearValidators();
+         this.dynamicForm.get(control.name + "-internal-other")?.updateValueAndValidity();
          this.dynamicForm.get(control.name + "-internal-other")?.reset("");
        }
  
@@ -104,6 +108,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         if(index!==checkboxLength-1 && control.hasOtherField) {
           this.dynamicForm.get(control.name + "-internal-other")?.disable();
+          this.dynamicForm.get(control.name + "-internal-other")?.clearValidators();
+          this.dynamicForm.get(control.name + "-internal-other")?.updateValueAndValidity();
           this.dynamicForm.get(control.name + "-internal-other")?.reset("");
         }
        }
@@ -177,13 +183,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       }
 
       this.dynamicForm.updateValueAndValidity();
-      console.log(this.dynamicForm.controls)
-
   }
 
   // A method to determine the type of autocomplete
   autocompleteBranch(newValue: string, control: FormControlModel) {
-    control.autocompleteLocal ? this.getLocalAutoCompleteOptions(newValue, control) : this.getAutoCompleteOptions(newValue, control)
+    this.dynamicForm.get(control.name).setValidators(this.autocompleteValidator);
+    this.dynamicForm.get(control.name).updateValueAndValidity();
+    control.autocompleteLocal ? this.getLocalAutoCompleteOptions(newValue, control) : this.getAutoCompleteOptions(newValue, control);
   }
 
 
@@ -224,9 +230,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     control.autoCompleteOptions = [];
 
 
-    const availableOptions = control.autocompleteConfig.localAutocompletePool.filter(option => {
-      if(!option || !newValue) return false;
-      return JSON.stringify(option).toLowerCase().indexOf(newValue.toLowerCase()) !== -1
+    const availableOptions = control.autocompleteConfig.localAutocompletePool.filter(value => {
+      if(!value || !newValue) return false;
+      let option = "";
+      (control.autocompleteConfig?.returnType as any[]).forEach((param) => {
+        option = option.concat(value[param]+", ");
+      });
+      
+      return option.toLowerCase().indexOf(newValue.toLowerCase()) !== -1
     });
 
     if(control.autocompleteConfig?.returnType==="string") {
@@ -246,6 +257,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
   onClickAutocomplete(option: string, control: FormControlModel) {
       this.dynamicForm.get(control.name)?.setValue(option);
+      this.dynamicForm.get(control.name)?.clearValidators();
+      this.dynamicForm.get(control.name)?.updateValueAndValidity();
     }
 
   // Submits the form, if it's valid
@@ -265,7 +278,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     this.submittedForm = JSON.stringify(data);
     const obj = {"officialQuestion1":["Da"],"timePeriodFrom1":[],"timePeriodTo1":[],"officialPosition1":["Predsednik, potpredsenik i član saveta Državne revitorske institucije"],"officialQuestion2":["Da"],"timePeriodFrom2":[],"timePeriodTo2":[],"officialPosition2":["Šef države i/ili vlade, član vlade i njegov zamenik"],"officialQuestion3":["Da"],"timePeriodFrom3":[],"timePeriodTo3":[],"officialPosition3":["Direktor u međunarodnoj organizaciji"],"officialQuestion4":["Da"],"officialFullName4":"","officialPosition4":"","timePeriodFrom4":[],"timePeriodTo4":[],"officialQuestion5":["Da"],"officialFullName5":"","officialPosition5":"","timePeriodFrom5":[],"timePeriodTo5":[],"officialQuestion6":["Da"],"officialFullName6":[],"officialPosition6":"","timePeriodFrom6":[],"timePeriodTo6":[],"familyRelation":["Bračni ili vanbračni partner"]}
-    console.log(this.schemaValidator(this.formJson,obj));
   }
 
   schemaValidator(schema: any, object: any) {
@@ -326,6 +338,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     this.autoCompleteSubscription?.unsubscribe();
   }
 
+  autocompleteValidator() {
+    return {error: {error: true}};
+  }
+
 /*#############################################
 The methods below are for testing purposes only
 #############################################*/
@@ -352,6 +368,7 @@ The methods below are for testing purposes only
         value:"",
         type:"input",
         required: true,
+        placeholder: "Alo breeee",
         inputType: "text",
         hasAutocomplete: true,
         readOnly: true,
@@ -367,6 +384,7 @@ The methods below are for testing purposes only
         type:"input",
         required: true,
         isDateInput: true,
+        placeholder: "__/__/____",
         inputType: "text"
       },
       {
@@ -405,6 +423,373 @@ The methods below are for testing purposes only
         checkboxOptions: ["Option1","Option2","Option3","Option4","Option5"],
         multipleChoiceCheckbox: false,
         hasOtherField: true
+      },
+      {
+        "label": "Organizaciona jedinica",
+        "name":"organizationalUnit",
+        "value":"",
+        "type":"input",
+        "required": true,
+        "inputType": "text",
+        "hasAutocomplete": true,
+        "autocompleteLocal": true,
+        placeholder: "alooo",
+        autocompleteHintMessage: "Molimo vas breeeeeeeeeee",
+        "autocompleteConfig": {
+          "returnType": ["naziv","adresa","mesto"],
+          "localAutocompletePool": [
+            {
+              "naziv": "Filijala Beograd-Grawe",
+              "adresa": "Bul. Mihajla Pupina 115đ",
+              "mesto": "Novi Beograd",
+              "mail": "Filijala_Grawe@aikbanka.rs",
+              "cbsid": 510
+            },
+            {
+              "naziv": "Filijala Fontana",
+              "adresa": "Otona Župančića 1",
+              "mesto": "Novi Beograd",
+              "mail": "Filijala_Fontana@aikbanka.rs",
+              "cbsid": 505
+            },
+            {
+              "naziv": "Filijala Vidikovac",
+              "adresa": "Patrijarha Joanikija 28b",
+              "mesto": "Beograd",
+              "mail": "Filijala_Vidikovac@aikbanka.rs",
+              "cbsid": 525
+            },
+            {
+              "naziv": "Filijala Vojvode Stepe",
+              "adresa": "Vojvode Stepe 171",
+              "mesto": "Beograd",
+              "mail": "Filijala_Vojvode_Stepe@aikbanka.rs",
+              "cbsid": 535
+            },
+            {
+              "naziv": "Filijala Zemun",
+              "adresa": "Glavna 7",
+              "mesto": "Zemun",
+              "mail": "Filijala_Zemun@aikbanka.rs",
+              "cbsid": 545
+            },
+            {
+              "naziv": "Filijala Jurija Gagarina",
+              "adresa": "Jurija Gagarina 32",
+              "mesto": "Novi Beograd",
+              "mail": "Filijala_Jurija_Gagarina@aikbanka.rs",
+              "cbsid": 550
+            },
+            {
+              "naziv": "Filijala Banovo Brdo",
+              "adresa": "Požeška 76",
+              "mesto": "Beograd",
+              "mail": "Filijala_Banovo_Brdo@aikbanka.rs",
+              "cbsid": 555
+            },
+            {
+              "naziv": "Filijala Kralja Milana Beograd",
+              "adresa": "Kralja Milana 11",
+              "mesto": "Beograd",
+              "mail": "Filijala_Kralja_Milana@aikbanka.rs",
+              "cbsid": 533
+            },
+            {
+              "naziv": "Filijala Bulevar Kralja Aleksandra",
+              "adresa": "Bul. Kralja Aleksandra 334",
+              "mesto": "Beograd",
+              "mail": "Filijala_Bul_KA@aikbanka.rs",
+              "cbsid": 501
+            },
+            {
+              "naziv": "Filijala Makedonska",
+              "adresa": "Makedonska 19",
+              "mesto": "Beograd",
+              "mail": "Filijala_Makedonska@aikbanka.rs",
+              "cbsid": 515
+            },
+            {
+              "naziv": "Filijala Slavija",
+              "adresa": "Kralja Milana 43",
+              "mesto": "Beograd",
+              "mail": "Filijala_Slavija@aikbanka.rs",
+              "cbsid": 530
+            },
+            {
+              "naziv": "Filijala Stari Grad",
+              "adresa": "Cara Dušana 84-86",
+              "mesto": "Beograd",
+              "mail": "Filijala_Stari_Grad@aikbanka.rs",
+              "cbsid": 584
+            },
+            {
+              "naziv": "Filijala Lazarevac",
+              "adresa": "Karađorđeva 29",
+              "mesto": "Lazaravac",
+              "mail": "Filijala_Lazarevac@aikbanka.rs",
+              "cbsid": 585
+            },
+            {
+              "naziv": "Filijala Obrenovac",
+              "adresa": "Aleksandra Ace Simovića 2",
+              "mesto": "Obrenovac",
+              "mail": "Filijala_Obrenovac@aikbanka.rs",
+              "cbsid": 575
+            },
+            {
+              "naziv": "Filijala Pančevo",
+              "adresa": "Karađorđeva 2b",
+              "mesto": "Pančevo",
+              "mail": "Filijala_Pancevo@aikbanka.rs",
+              "cbsid": 560
+            },
+            {
+              "naziv": "Filijala Pozarevac",
+              "adresa": "Trg Radomira Vujovića br 12",
+              "mesto": "Požarevac",
+              "mail": "Filijala_Pozarevac@aikbanka.rs",
+              "cbsid": 520
+            },
+            {
+              "naziv": "Filijala Smederevo",
+              "adresa": "Kralja Petra Prvog 11",
+              "mesto": "Smederevo",
+              "mail": "Filijala_Smederevo@aikbanka.rs",
+              "cbsid": 590
+            },
+            {
+              "naziv": "Filijala Šabac",
+              "adresa": "V. Jovanovića 22",
+              "mesto": "Šabac",
+              "mail": "Filijala_Sabac@aikbanka.rs",
+              "cbsid": 570
+            },
+            {
+              "naziv": "Filijala Valjevo",
+              "adresa": "Vojvode Mišića 22",
+              "mesto": "Valjevo",
+              "mail": "Filijala_Valjevo@aikbanka.rs",
+              "cbsid": 580
+            },
+            {
+              "naziv": "Filijala Niš",
+              "adresa": "Nikole Pašića 42",
+              "mesto": "Niš",
+              "mail": "Filijala_Nis@aikbanka.rs",
+              "cbsid": 20
+            },
+            {
+              "naziv": "Filijala Pirot",
+              "adresa": "Slavonska 1",
+              "mesto": "Pirot",
+              "mail": "Filijala_Pirot@aikbanka.rs",
+              "cbsid": 30
+            },
+            {
+              "naziv": "Filijala Bul. Dr Zorana Đinđića",
+              "adresa": "Bul. dr Zorana Đinđića 23",
+              "mesto": "Niš",
+              "mail": "Filijala_Bul_ZDjindjica@aikbanka.rs",
+              "cbsid": 225
+            },
+            {
+              "naziv": "Filijala Voždovac",
+              "adresa": "Voždova 2",
+              "mesto": "Niš",
+              "mail": "Filijala_Vozdova@aikbanka.rs",
+              "cbsid": 220
+            },
+            {
+              "naziv": "Filijala Zona III",
+              "adresa": "Bul. Nemanjića 25",
+              "mesto": "Niš",
+              "mail": "Filijala_Zona3@aikbanka.rs",
+              "cbsid": 230
+            },
+            {
+              "naziv": "Filijala Prokuplje",
+              "adresa": "Topličkih junaka 1",
+              "mesto": "Prokuplje",
+              "mail": "Filijala_Prokuplje@aikbanka.rs",
+              "cbsid": 265
+            },
+            {
+              "naziv": "Filijala Kruševac",
+              "adresa": "Vidovdanska 9-11",
+              "mesto": "Kruševac",
+              "mail": "Filijala_Krusevac@aikbanka.rs",
+              "cbsid": 70
+            },
+            {
+              "naziv": "Filijala Vrnjačka Banja",
+              "adresa": "Kraljevačka 6, Drvara I",
+              "mesto": "Vrnjačka banja",
+              "mail": "Filijala_Vrnjacka_banja@aikbanka.rs",
+              "cbsid": 710
+            },
+            {
+              "naziv": "Filijala Leskovac",
+              "adresa": "Bul. Oslobođenja bb",
+              "mesto": "Leskovac",
+              "mail": "Filijala_Leskovac@aikbanka.rs",
+              "cbsid": 260
+            },
+            {
+              "naziv": "Filijala Vranje",
+              "adresa": "Kralja Stefana Prvovenčanog 169",
+              "mesto": "Vrane",
+              "mail": "Filijala_Vranje@aikbanka.rs",
+              "cbsid": 240
+            },
+            {
+              "naziv": "Filijala Jagodina",
+              "adresa": "Knjeginje Milice 73",
+              "mesto": "Jagodina",
+              "mail": "Filijala_Jagodina@aikbanka.rs",
+              "cbsid": 290
+            },
+            {
+              "naziv": "Filijala Paraćin",
+              "adresa": "Kralja Petra I 30",
+              "mesto": "Paraćin",
+              "mail": "Filijala_Paracin@aikbanka.rs",
+              "cbsid": 250
+            },
+            {
+              "naziv": "Filijala Zaječar",
+              "adresa": "Pana Đukića bb",
+              "mesto": "Zaječar",
+              "mail": "Filijala_Zajecar@aikbanka.rs",
+              "cbsid": 750
+            },
+            {
+              "naziv": "Filijala Bor",
+              "adresa": "Đorđa Vajferta 21",
+              "mesto": "Bor",
+              "mail": "Filijala_Bor@aikbanka.rs",
+              "cbsid": 740
+            },
+            {
+              "naziv": "Filijala Negotin",
+              "adresa": "JNA 2",
+              "mesto": "Negotin",
+              "mail": "Filijala_Negotin@aikbanka.rs",
+              "cbsid": 760
+            },
+            {
+              "naziv": "Filijala Kragujevac",
+              "adresa": "Trg Radomira Putnika 3",
+              "mesto": "Kragujevac",
+              "mail": "Filijala_Kragujevac@aikbanka.rs",
+              "cbsid": 40
+            },
+            {
+              "naziv": "Filijala Čačak",
+              "adresa": "Kuželjeva 2",
+              "mesto": "Čačak",
+              "mail": "Filijala_Cacak@aikbanka.rs",
+              "cbsid": 350
+            },
+            {
+              "naziv": "Filijala Gornji Milanovac",
+              "adresa": "Kneza Aleksandra 13",
+              "mesto": "Gornji Milanovac",
+              "mail": "Filijala_GMilanovac@aikbanka.rs",
+              "cbsid": 330
+            },
+            {
+              "naziv": "Filijala Užice",
+              "adresa": "Dimitrija Tucovića 44",
+              "mesto": "Užice",
+              "mail": "Filijala_Uzice@aikbanka.rs",
+              "cbsid": 370
+            },
+            {
+              "naziv": "Filijala Prijepolje",
+              "adresa": "Sandžačkih brigada 19",
+              "mesto": "Prijepolje",
+              "mail": "Filijala_Prijepolje@aikbanka.rs",
+              "cbsid": 380
+            },
+            {
+              "naziv": "Filijala Novi Pazar",
+              "adresa": "Stevana Nemanje bb",
+              "mesto": "Novi Pazar",
+              "mail": "Filijala_Novi_Pazar@aikbanka.rs",
+              "cbsid": 420
+            },
+            {
+              "naziv": "Filijala Kraljevo",
+              "adresa": "Miloša Velikog 58",
+              "mesto": "Kraljevo",
+              "mail": "Filijala_Kraljevo@aikbanka.rs",
+              "cbsid": 440
+            },
+            {
+              "naziv": "Filijala Novi Sad 1",
+              "adresa": "Bul. Mihajla Pupina 2",
+              "mesto": "Novi Sad",
+              "mail": "Filijala_Novi_Sad@aikbanka.rs",
+              "cbsid": 815
+            },
+            {
+              "naziv": "Filijala Novi Sad 2",
+              "adresa": "Bul. Oslobođenja 68b",
+              "mesto": "Novi Sad",
+              "mail": "Filijala_Bul_Oslobodjenja@aikbanka.rs",
+              "cbsid": 80
+            },
+            {
+              "naziv": "Filijala Ruma",
+              "adresa": "Glavna 192",
+              "mesto": "Ruma",
+              "mail": "Filijala_Ruma@aikbanka.rs",
+              "cbsid": 820
+            },
+            {
+              "naziv": "Filijala Inđija",
+              "adresa": "Novosadska 2",
+              "mesto": "Inđija",
+              "mail": "Filijala_Indjija@aikbanka.rs",
+              "cbsid": 860
+            },
+            {
+              "naziv": "Filijala Subotica",
+              "adresa": "Korzo 8",
+              "mesto": "Subotica",
+              "mail": "Filijala_Subotica@aikbanka.rs",
+              "cbsid": 90
+            },
+            {
+              "naziv": "Filijala Vrbas",
+              "adresa": "Maršala Tita 80",
+              "mesto": "Vrbas",
+              "mail": "Filijala_Vrbas@aikbanka.rs",
+              "cbsid": 830
+            },
+            {
+              "naziv": "Filijala Zrenjanin",
+              "adresa": "Žitni trg bb",
+              "mesto": "Zrenjanin",
+              "mail": "Filijala_Zrenjanin@aikbanka.rs",
+              "cbsid": 60
+            },
+            {
+              "naziv": "Filijala Kikinda",
+              "adresa": "Trg Srpskih dobrovoljaca 6",
+              "mesto": "Kikinda",
+              "mail": "Filijala_Kikinda@aikbanka.rs",
+              "cbsid": 670
+            },
+            {
+              "naziv": "Filijala Sombor",
+              "adresa": "Pariska 1",
+              "mesto": "Sombor",
+              "mail": "Filijala_Sombor@aikbanka.rs",
+              "cbsid": 850
+            }
+          ]
+        }
       }
     ];
   }
@@ -773,4 +1158,39 @@ The methods below are for testing purposes only
     ];
 
   }
+
+  getEmployersForm() {
+    this.formControlArray = [
+      {
+        "label": "Status zaposlenja",
+        "name": "employmentStatus",
+        "required": true,
+        "value": [],
+        "type": "checkbox",
+        "checkboxOptions": ["Zaposlen na neodređeno","Nezaposlen","Penzioner","Vlasnik radnje - preduzetnik","Zaposlen na određeno"],
+        "multipleChoiceCheckbox" : false
+      },
+      {
+        "label": "Prosek mesečnih primanja (RSD)",
+        "name": "averageMonthlyIncome",
+        "required": true,
+        "value": "",
+        "type": "input",
+        "inputType": "number"
+      },
+      {
+        "label": "Poslodavac",
+        "name": "employer",
+        "required": true,
+        "value": "",
+        "type": "input",
+        "hasAutocomplete": true,
+        "autocompleteConfig": {
+          "url": "http://localhost:8080/internal/getEmployers/?key=",
+          "returnType": ["name"]
+        }
+      }
+    ]
+  }
+
 }

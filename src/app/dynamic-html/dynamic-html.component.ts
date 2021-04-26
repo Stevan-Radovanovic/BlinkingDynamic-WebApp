@@ -22,6 +22,7 @@ export class DynamicHtmlComponent implements OnInit {
     totalInterest: 3,
     totalFees: 4,
     totalRepayment: 2
+    
   }
 
   constructor() { }
