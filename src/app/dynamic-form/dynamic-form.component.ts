@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatCheckboxChange } from "@angular/material/checkbox";
 import { EMPTY, empty, Observable, of, Subscription } from "rxjs";
-import { catchError, distinctUntilChanged, filter, startWith, switchMap, tap } from "rxjs/operators"
+import { catchError, distinctUntilChanged, filter, map, startWith, switchMap, tap } from "rxjs/operators"
 import { AppService } from "../app.service";
 import { FormControlModel } from "./form-control.model";
 import { DynamicFormModel } from "./form.model";
@@ -191,7 +191,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   autocompleteBranch(newValue: string, control: FormControlModel) {
     this.dynamicForm.get(control.name).setValidators(this.autocompleteValidator);
     this.dynamicForm.get(control.name).updateValueAndValidity();
-    control.autocompleteLocal ? this.getLocalAutoCompleteOptions(newValue, control) : this.getAutoCompleteOptions(newValue, control);
+    control.autocompleteLocal ? this.getLocalAutoCompleteOptions(newValue, control);
   }
 
   registerValueChangeSubscription() {
@@ -208,10 +208,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
               return EMPTY;
             }),
           )),
-          tap(payload => {
+          map(payload => {
             console.log(payload);
             if(control.autocompleteConfig?.returnType==="string") {
-              console.log('here');
               return payload;
             }
     
@@ -222,10 +221,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
               (control.autocompleteConfig?.returnType as any[]).forEach((param) => {
                 option = option.concat(value[param]+", ");
               })
+
               tempArray.push(option.slice(0,option.length-2));
             })
-    
-            return of(tempArray);
+
+            return tempArray;
     
           })
         )
@@ -236,39 +236,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     })
 
 
-  }
-
-  // Called with each value change for auto complete inputs
-  getAutoCompleteOptions(newValue: string, control: FormControlModel): void {
-
-    // Disables auto complete if the input field character count is below 3
-    // if(!newValue || newValue.length<3) {
-    //   control.autoCompleteOptions = of([]);
-    //   return;
-    // } 
-
-    // If the input field length is above 3, sets all the necessary auto complete options
-
-
-    // this.autoCompleteSubscription = this.serv.getAutocompleteSource(control.autocompleteConfig!.url,newValue).subscribe((response: any) => {
-
-    //   if(control.autocompleteConfig?.returnType==="string") {
-    //     control.autoCompleteOptions = response.payload;
-    //     return;
-    //   }
-
-    //   control.autoCompleteOptions = [];
-
-    //   response.payload.forEach((value: any) => {
-    //     let option = "";
-    //     (control.autocompleteConfig?.returnType as any[]).forEach((param) => {
-    //       option = option.concat(value[param]+", ");
-    //     })
-    //     control.autoCompleteOptions!.push(option.slice(0,option.length-2));
-    //   })
-      
-    // });
-    
   }
 
   // Called with each value change for auto complete inputs with local autocomplete bases
@@ -305,11 +272,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
       this.dynamicForm.get(control.name)?.setValue(option);
       this.dynamicForm.get(control.name)?.clearValidators();
       this.dynamicForm.get(control.name)?.updateValueAndValidity();
-    }
+  }
 
   // Submits the form, if it's valid
   submit(): void {
-
     if(!this.dynamicForm.valid) return;
 
     const data: any = {}
@@ -327,7 +293,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   }
 
   schemaValidator(schema: any, object: any) {
-
     const objectCopy = {...object};
 
     if (Object.keys(objectCopy).length !== schema.controls.length) return false;
@@ -370,22 +335,21 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     }
 
     return true;
-
   }
 
   getStartingFieldValue(ctl: FormControlModel) {
-
     if(ctl.type === 'checkbox' || ctl.type === 'multiple-select') return [];
     return "";
-
-  }
-
-  ngOnDestroy(): void {
   }
 
   autocompleteValidator() {
     return {error: {error: true}};
   }
+
+  ngOnDestroy(): void {
+  }
+
+
 
 /*#############################################
 The methods below are for testing purposes only
@@ -477,7 +441,7 @@ The methods below are for testing purposes only
         "required": true,
         "inputType": "text",
         "hasAutocomplete": true,
-        "autocompleteLocal": true,
+        "autocompleteLocal": false,
         placeholder: "alooo",
         autocompleteHintMessage: "Molimo vas breeeeeeeeeee",
         "autocompleteConfig": {

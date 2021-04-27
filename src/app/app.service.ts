@@ -10,6 +10,6 @@ export class AppService {
   constructor(private http: HttpClient) { }
 
   getAutocompleteSource(url: string, key: string): Observable<any[]> {
-    return of(["steva","stevica","stivi"]);
+    return of([{naziv: "steva"},{naziv: "stevica"},{naziv: "stivi"}]);
   }
 }
