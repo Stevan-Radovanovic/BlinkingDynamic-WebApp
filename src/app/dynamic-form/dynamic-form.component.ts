@@ -36,7 +36,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   }
 
   constructor(private serv: AppService) {
-    this.getForm1();
+    this.getPepForm();
     this.transformToControls();
     this.initializeForm();
     this.registerValueChangeSubscription();
@@ -143,9 +143,16 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
               if(control.affectedControlNames.indexOf(ctl.name)!==-1) {
 
                 ctl.shouldShow = true;
-                ctl.required = true;
-                this.dynamicForm.get(ctl.name).setValidators(Validators.required);
-                this.dynamicForm.get(ctl.name).updateValueAndValidity();
+                
+                if(control.affectedControlNamesThatAreNotRequired && control.affectedControlNamesThatAreNotRequired.indexOf(ctl.name)!==-1) {
+                  console.log("This");
+                  ctl.required = false;
+                } else {
+                  ctl.required = true;
+                  this.dynamicForm.get(ctl.name).setValidators(Validators.required);
+                  this.dynamicForm.get(ctl.name).updateValueAndValidity();
+                }
+
 
               }
           }
@@ -191,7 +198,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   autocompleteBranch(newValue: string, control: FormControlModel) {
     this.dynamicForm.get(control.name).setValidators(this.autocompleteValidator);
     this.dynamicForm.get(control.name).updateValueAndValidity();
-    control.autocompleteLocal ? this.getLocalAutoCompleteOptions(newValue, control);
+    control.autocompleteLocal ? this.getLocalAutoCompleteOptions(newValue, control) : null;
   }
 
   registerValueChangeSubscription() {
@@ -365,7 +372,7 @@ The methods below are for testing purposes only
 
     this.formControlArray = this.formJson?.controls;
 
-    this.getRefinanceForm();
+    this.getPepForm();
    
   }
 
@@ -823,6 +830,7 @@ The methods below are for testing purposes only
         type: "checkbox",
         checkboxOptions: ["Da","Ne"],
         affectedControlNames: ["timePeriodFrom1","timePeriodTo1","officialPosition1"],
+        affectedControlNamesThatAreNotRequired: ["timePeriodTo1"],
         valueThatEnablesAffectedControls: "Da",
         shouldShow: false
       },
@@ -839,6 +847,7 @@ The methods below are for testing purposes only
       {
         label: "Period obavljanja (Krajnji datum)",
         name: "timePeriodTo1",
+        hintMessage: "* Ukoliko je funkcioner još uvek na datoj funkciji, ovo polje ostaviti prazno",
         required: false,
         value: "",
         type: "input",
@@ -873,6 +882,7 @@ The methods below are for testing purposes only
         type: "checkbox",
         checkboxOptions: ["Da","Ne"],
         affectedControlNames: ["timePeriodFrom2","timePeriodTo2","officialPosition2"],
+        affectedControlNamesThatAreNotRequired: ["timePeriodTo2"],
         valueThatEnablesAffectedControls: "Da",
         shouldShow: false
       },
@@ -889,6 +899,7 @@ The methods below are for testing purposes only
       {
         label: "Period obavljanja (Krajnji datum)",
         name: "timePeriodTo2",
+        hintMessage: "* Ukoliko je funkcioner još uvek na datoj funkciji, ovo polje ostaviti prazno",
         required: false,
         value: "",
         type: "input",
@@ -908,7 +919,7 @@ The methods below are for testing purposes only
         "Šef države i/ili vlade, član vlade i njegov zamenik",
         "Izabrani predstavnik zakonodavnog tela",
         "Sudija vrhovnog i ustavnog suda ili drugog sudskog organa na visokom nivou, protiv čije presude, osim u izuzetnim slučajevima, nije moguće koristiti redovni ili vanredni pravni lek",
-        "Član računskog suda, odnosno vrhovne revizorske institucije i članovi organa upravljanja centralne banke",
+        "Član računskog suda, odnosno državne revizorske institucije i članovi organa upravljanja centralne banke",
         "Ambasador, otpravnik poslova i visoki oficir oružanih snaga",
         "Član upravnog i nadzornog organa pravnog lica koje je u većinskom vlasništvu strane države",
         "Član organa upravljanja političke stranke"
@@ -922,6 +933,7 @@ The methods below are for testing purposes only
         type: "checkbox",
         checkboxOptions: ["Da","Ne"],
         affectedControlNames: ["timePeriodFrom3","timePeriodTo3","officialPosition3"],
+        affectedControlNamesThatAreNotRequired: ["timePeriodTo3"],
         valueThatEnablesAffectedControls: "Da",
         shouldShow: false
       },
@@ -938,6 +950,7 @@ The methods below are for testing purposes only
       {
         label: "Period obavljanja (Krajnji datum)",
         name: "timePeriodTo3",
+        hintMessage: "* Ukoliko je funkcioner još uvek na datoj funkciji, ovo polje ostaviti prazno",
         required: false,
         value: "",
         type: "input",
@@ -966,7 +979,8 @@ The methods below are for testing purposes only
         value: [],
         type: "checkbox",
         checkboxOptions: ["Da","Ne"],
-        affectedControlNames: ["timePeriodFrom4","timePeriodTo4","officialPosition4","officialFullName4"],
+        affectedControlNames: ["timePeriodFrom4","timePeriodTo4","officialPosition4","officialFullName4","familyRelation4"],
+        affectedControlNamesThatAreNotRequired: ["timePeriodTo4"],
         valueThatEnablesAffectedControls: "Da",
         shouldShow: false
       },
@@ -1006,6 +1020,20 @@ The methods below are for testing purposes only
         type: "input",
         inputType: "text",
         isDateInput: true,
+        shouldShow: false,
+        hintMessage: "* Ukoliko je funkcioner još uvek na datoj funkciji, ovo polje ostaviti prazno"
+      },
+      {
+        label: "Povezanost sa funkcionerom",
+        name: "familyRelation4",
+        required: false,
+        value: [],
+        type: "checkbox",
+        checkboxOptions: ["Bračni ili vanbračni partner","Roditelj","Brat / sestra","Dete, usvojeno dete, pastorče",
+        "Bračni ili vanbračni partner, usvojenog deteta, ili pastorčeta", 
+        "Ostvarujem zajedničku dobit iz imovine ili uspostavljenog poslovnog odnosa", "Imam bilo koje druge bliske poslovne odnose"],
+        hasOtherField: true,
+        otherFieldLabel: "Drugo: ",
         shouldShow: false
       },
       {
@@ -1015,7 +1043,8 @@ The methods below are for testing purposes only
         value: [],
         type: "checkbox",
         checkboxOptions: ["Da","Ne"],
-        affectedControlNames: ["timePeriodFrom5","timePeriodTo5","officialPosition5","officialFullName5"],
+        affectedControlNames: ["timePeriodFrom5","timePeriodTo5","officialPosition5","officialFullName5","familyRelation5"],
+        affectedControlNamesThatAreNotRequired: ["timePeriodTo5"],
         valueThatEnablesAffectedControls: "Da",
         shouldShow: false
       },
@@ -1050,11 +1079,25 @@ The methods below are for testing purposes only
       {
         label: "Period obavljanja (Krajnji datum)",
         name: "timePeriodTo5",
+        hintMessage: "* Ukoliko je funkcioner još uvek na datoj funkciji, ovo polje ostaviti prazno",
         required: false,
         value: "",
         type: "input",
         inputType: "text",
         isDateInput: true,
+        shouldShow: false
+      },
+      {
+        label: "Povezanost sa funkcionerom",
+        name: "familyRelation5",
+        required: false,
+        value: [],
+        type: "checkbox",
+        checkboxOptions: ["Bračni ili vanbračni partner","Roditelj","Brat / sestra","Dete, usvojeno dete, pastorče",
+        "Bračni ili vanbračni partner, usvojenog deteta, ili pastorčeta", 
+        "Ostvarujem zajedničku dobit iz imovine ili uspostavljenog poslovnog odnosa", "Imam bilo koje druge bliske poslovne odnose"],
+        hasOtherField: true,
+        otherFieldLabel: "Drugo: ",
         shouldShow: false
       },
       {
@@ -1064,7 +1107,8 @@ The methods below are for testing purposes only
         value: [],
         type: "checkbox",
         checkboxOptions: ["Da","Ne"],
-        affectedControlNames: ["timePeriodFrom6","timePeriodTo6","officialPosition6","officialFullName6","familyRelation"],
+        affectedControlNames: ["timePeriodFrom6","timePeriodTo6","officialPosition6","officialFullName6","familyRelation6"],
+        affectedControlNamesThatAreNotRequired: ["timePeriodTo6"],
         valueThatEnablesAffectedControls: "Da",
         shouldShow: false
       },
@@ -1099,6 +1143,7 @@ The methods below are for testing purposes only
       {
         label: "Period obavljanja (Krajnji datum)",
         name: "timePeriodTo6",
+        hintMessage: "* Ukoliko je funkcioner još uvek na datoj funkciji, ovo polje ostaviti prazno",
         required: false,
         value: "",
         type: "input",
@@ -1108,7 +1153,7 @@ The methods below are for testing purposes only
       },
       {
         label: "Povezanost sa funkcionerom",
-        name: "familyRelation",
+        name: "familyRelation6",
         required: false,
         value: [],
         type: "checkbox",

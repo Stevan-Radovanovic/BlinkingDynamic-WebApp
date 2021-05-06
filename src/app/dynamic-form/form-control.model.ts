@@ -23,6 +23,7 @@ export interface FormControlModel {
         localAutocompletePool?: any[];
     };
     autocompleteHintMessage?: string;
+    hintMessage?: string
     //Not sent in JSON
     autoCompleteOptions?: any;
     placeholder?: string;
@@ -39,6 +40,7 @@ export interface FormControlModel {
     isDateInput?: boolean
     shouldShow?: boolean;
     affectedControlNames?: string[];
+    affectedControlNamesThatAreNotRequired?: string[];
     valueThatEnablesAffectedControls?: string;
 
     //Added for read-only forms

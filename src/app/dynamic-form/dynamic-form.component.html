@@ -65,6 +65,7 @@
               formControlName="{{control.name}}" value="{{control.value}}" placeholder="{{control.placeholder}}">
               </textarea>
       
+            <mat-hint *ngIf="control.hintMessage">{{control.hintMessage}}</mat-hint>
             <mat-error *ngIf="control.hasAutocomplete">{{control.autocompleteHintMessage}}</mat-error>
 
             </mat-form-field>
