@@ -21,7 +21,7 @@
               <mat-label>{{control.label}}</mat-label>
       
               <!--Regular Input-->
-              <input matInput type="{{control.inputType}}" *ngIf="control.type==='input' && !control.hasAutocomplete && !control.isDateInput" 
+              <input matInput type="{{control.inputType}}" *ngIf="control.type==='input' && !control.hasAutocomplete && !control.isDateInput && !control.isCurrency" 
               formControlName="{{control.name}}" value="{{control.value}}" placeholder="{{control.placeholder}}"/>
               
 
@@ -29,6 +29,11 @@
               <input matInput type="{{control.inputType}}" *ngIf="control.type==='input' && !control.hasAutocomplete && control.isDateInput" 
               formControlName="{{control.name}}" value="{{control.value}}"placeholder="{{control.placeholder}}"
               [textMask]="{mask: dateMask, showMask:false, guide: true, modelClean: true}"/>
+
+              <!--Currency Input-->
+              <input matInput type="{{control.inputType}}" *ngIf="control.type==='input' && !control.hasAutocomplete && control.isCurrency" 
+              formControlName="{{control.name}}" value="{{control.value}}"placeholder="{{control.placeholder}}"
+              [textMask]="{mask: currencyMask, showMask:false, guide: false, modelClean: true}"/>
 
               <!--AutoComplete Input-->
               <div *ngIf="control.hasAutocomplete">
@@ -92,9 +97,16 @@
               <!--Input field inside a checkbox group-->
               <mat-checkbox *ngIf="control.hasOtherField" (change)="setCheckboxValue($event,control,control.checkboxCheckedValues!.length-1)"
               [checked]="control.checkboxCheckedValues![control.checkboxCheckedValues!.length-1]">
-                {{control.otherFieldLabel ? control.otherFieldLabel : "Ostalo: "}} 
-                <input formControlName="{{control.name + '-internal-other'}}" type="text"/>
+
+                {{control.otherFieldLabel ? control.otherFieldLabel : "Ostalo: "}}
+
+                <input *ngIf="!control.isCurrency" formControlName="{{control.name + '-internal-other'}}" type="text"/>
+                <input *ngIf="control.isCurrency" formControlName="{{control.name + '-internal-other'}}" type="text" 
+                [textMask]="{mask: currencyMask, showMask:false, guide: false, modelClean: true}"/>
+
               </mat-checkbox>
+
+              <mat-hint *ngIf="control.hintMessage">{{control.hintMessage}}</mat-hint>
           
             </div>
 

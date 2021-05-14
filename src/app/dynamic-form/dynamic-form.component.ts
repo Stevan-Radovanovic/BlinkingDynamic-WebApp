@@ -7,6 +7,8 @@ import { catchError, distinctUntilChanged, filter, map, startWith, switchMap, ta
 import { AppService } from "../app.service";
 import { FormControlModel } from "./form-control.model";
 import { DynamicFormModel } from "./form.model";
+import createNumberMask from 'text-mask-addons/dist/createNumberMask'
+
 
 @Component({
   selector: "app-dynamic-form",
@@ -35,8 +37,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     return days.concat(months).concat(years);
   }
 
+
+  currencyMask = createNumberMask({suffix: '.00', prefix: ''});
+
   constructor(private serv: AppService) {
-    this.getPepForm();
+    this.getForm1();
     this.transformToControls();
     this.initializeForm();
     this.registerValueChangeSubscription();
@@ -287,16 +292,63 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     const data: any = {}
 
+    const currencyFields = this.formControlArray.filter((control) => control.isCurrency).map((control => control.name));
+    console.log(currencyFields);
+
     // Excludes the value of hidden internal form controls
     for (const control in this.dynamicForm.controls) {
       if(control.endsWith("-internal-other")) continue;
+
+      if(currencyFields.indexOf(control)!==-1) {
+        data[control] = this.removeCommasAndPeriods(control,this.dynamicForm.controls[control].value);
+        continue;
+      }
+
       data[control] = this.dynamicForm.controls[control].value;
     }
 
-    this.formJson.controls = this.formControlArray;
+    //this.formJson.controls = this.formControlArray;
 
     this.submittedForm = JSON.stringify(data);
     const obj = {"officialQuestion1":["Da"],"timePeriodFrom1":[],"timePeriodTo1":[],"officialPosition1":["Predsednik, potpredsenik i član saveta Državne revitorske institucije"],"officialQuestion2":["Da"],"timePeriodFrom2":[],"timePeriodTo2":[],"officialPosition2":["Šef države i/ili vlade, član vlade i njegov zamenik"],"officialQuestion3":["Da"],"timePeriodFrom3":[],"timePeriodTo3":[],"officialPosition3":["Direktor u međunarodnoj organizaciji"],"officialQuestion4":["Da"],"officialFullName4":"","officialPosition4":"","timePeriodFrom4":[],"timePeriodTo4":[],"officialQuestion5":["Da"],"officialFullName5":"","officialPosition5":"","timePeriodFrom5":[],"timePeriodTo5":[],"officialQuestion6":["Da"],"officialFullName6":[],"officialPosition6":"","timePeriodFrom6":[],"timePeriodTo6":[],"familyRelation":["Bračni ili vanbračni partner"]}
+  }
+
+  removeCommasAndPeriods(control: string, value: string | Array<string>) {
+
+    const formControl = this.formControlArray.find(value => value.name === control);
+
+    if(formControl.type === 'checkbox') {
+
+      value = value as Array<string>;
+      value = value.map((element) => {
+        if(formControl.checkboxOptions.indexOf(element)===-1) {
+          let newValue="";
+          for (let i = 0; i < element.length; i++) {
+            
+            if(['.',','].indexOf(element[i])===-1) newValue+=element[i];
+            
+          }
+      
+    
+          return newValue.slice(0,newValue.length-2);
+        }
+
+        return element;
+
+      })
+
+      return value;
+    }
+
+    let newValue="";
+    for (let i = 0; i < value.length; i++) {
+      
+      if(['.',','].indexOf(value[i])===-1) newValue+=value[i];
+      
+    }
+
+    return newValue.slice(0,newValue.length-2);
+
   }
 
   schemaValidator(schema: any, object: any) {
@@ -399,8 +451,7 @@ The methods below are for testing purposes only
         value:"Radovanovic",
         type:"input",
         required: true,
-        isDateInput: true,
-        placeholder: "__/__/____",
+        isCurrency: true,
         inputType: "text"
       },
       {
@@ -437,6 +488,7 @@ The methods below are for testing purposes only
         type: "checkbox",
         required: true,
         checkboxOptions: ["Option1","Option2","Option3","Option4","Option5"],
+        isCurrency: true,
         multipleChoiceCheckbox: false,
         hasOtherField: true
       },
@@ -821,6 +873,7 @@ The methods below are for testing purposes only
         checkboxOptions: ["Da","Ne"],
         affectedControlNames: ["officialQuestion1","officialQuestion2","officialQuestion3","officialQuestion4","officialQuestion5","officialQuestion6"],
         valueThatEnablesAffectedControls: "Da",
+        hintMessage: "*Testiranje porukice"
       },
       {
         label: "Da li ste funkcioner Republike Srbije?",
@@ -1006,6 +1059,7 @@ The methods below are for testing purposes only
         label: "Period obavljanja (Početni datum)",
         name: "timePeriodFrom4",
         required: false,
+        placeholder: "asdsad",
         value: "",
         type: "input",
         inputType: "text",
@@ -1015,6 +1069,7 @@ The methods below are for testing purposes only
       {
         label: "Period obavljanja (Krajnji datum)",
         name: "timePeriodTo4",
+        placeholder: "asdsad",
         required: false,
         value: "",
         type: "input",
